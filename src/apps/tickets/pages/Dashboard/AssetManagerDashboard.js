@@ -417,7 +417,7 @@ setCurrMonthCount(currMonthCount);
   }
 
   return (
-    <div className="dashboard-container">
+    <div className="dashboard-container" style={{height: "autio !important"}}>
       {/* Statistics Cards */}
       <div className="stats-grid">
         <div className="stat-card">
