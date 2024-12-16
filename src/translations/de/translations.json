@@ -1,0 +1,221 @@
+{
+  "navbar": {
+    "dashboard": "Armaturenbrett",
+    "createTicket": "Ticket erstellen",
+    "changePassword": "Passwort ändern",
+    "logout": "Abmelden",
+    "profile": {
+      "role": "Rolle",
+      "email": "E-Mail"
+    }
+  },
+  "dashboard": {
+    "adminTitle": "Admin-Armaturenbrett",
+    "ticket_managerTitle": "Ticket-Manager-Armaturenbrett",
+    "customer_managerTitle": "Kundenmanager-Armaturenbrett",
+    "sales_managerTitle": "Vertriebsmanager-Armaturenbrett",
+    "userTitle": "Benutzer-Armaturenbrett",
+    "title": "Armaturenbrett",
+    "stats": {
+      "totalTickets": "Gesamttickets",
+      "newTickets": "Neue Tickets",
+      "inProgress": "In Bearbeitung",
+      "completed": "Abgeschlossen"
+    },
+    "tickets": {
+      "search": "Tickets suchen...",
+      "filters": {
+        "status": "Nach Status filtern",
+        "priority": "Nach Priorität filtern",
+        "department": "Nach Abteilung filtern"
+      },
+      "status": {
+        "new": "Neu",
+        "in_progress": "In Bearbeitung",
+        "waiting_customer": "Warten auf Kunden",
+        "completed": "Abgeschlossen",
+        "on_hold": "Angehalten",
+        "resolved": "Gelöst",
+        "rejected": "Abgelehnt",
+        "reopened": "Wiedereröffnet",
+        "escalated": "Eskaliert"
+      },
+      "priority": {
+        "high": "Hoch",
+        "middle": "Mittel",
+        "low": "Niedrig"
+      },
+      "department": {
+        "sales": "Vertrieb",
+        "sales_ue": "Vertrieb UE",
+        "sales_sth": "Vertrieb STH",
+        "service": "Service"
+      },
+      "category": {
+        "technical": "Technisch",
+        "billing": "Abrechnung",
+        "feature_request": "Funktionsanfrage",
+        "bug_report": "Fehlerbericht"
+      },
+      "table": {
+        "id": "ID",
+        "title": "Titel",
+        "status": "Status",
+        "priority": "Priorität",
+        "department": "Abteilung",
+        "created": "Erstellt",
+        "actions": "Aktionen"
+      },
+      "attachments": {
+        "title": "Anhänge",
+        "noAttachments": "Keine Anhänge für dieses Ticket verfügbar",
+        "size": "KB"
+      },
+      "activityLog": {
+        "title": "Aktivitätsprotokoll",
+        "noActivity": "Noch keine Aktivität aufgezeichnet",
+        "action": "Aktion",
+        "updatedValue": "Aktualisierter Wert",
+        "previousValue": "Vorheriger Wert"
+      }
+    },
+    "buttons": {
+      "create": "Erstellen",
+      "createManager": "Manager erstellen",
+      "createUser": "Benutzer erstellen",
+      "view": "Details anzeigen",
+      "edit": "Bearbeiten",
+      "delete": "Löschen",
+      "cancel": "Abbrechen",
+      "save": "Änderungen speichern",
+      "createTicket": "Ticket erstellen",
+      "download": "Herunterladen"
+    },
+    "modal": {
+      "createTicket": "Neues Ticket erstellen",
+      "editTicket": "Ticket bearbeiten",
+      "viewTicket": "Ticket-Details",
+      "createManager": "Neuen Manager erstellen",
+      "createUser": "Neuen Benutzer erstellen",
+      "ticketDetails": {
+        "title": "Ticket-Details",
+        "ticketId": "Ticket-ID",
+        "description": "Beschreibung",
+        "status": "Status",
+        "priority": "Priorität",
+        "category": "Kategorie",
+        "department": "Abteilung",
+        "assignedTo": "Zugewiesen an",
+        "created": "Erstellt",
+        "solution": "Lösung",
+        "feedback": "Feedback",
+        "relatedTickets": "Verwandte Tickets",
+        "unassigned": "Nicht zugewiesen",
+        "noSolution": "Keine Lösung vorhanden",
+        "noFeedback": "Kein Feedback vorhanden",
+        "none": "Keine"
+      }
+    },
+    "loading": "Ticket-Details werden geladen...",
+    "form": {
+      "title": "Titel",
+      "titlePlaceholder": "Tickettitel eingeben",
+      "description": "Beschreibung",
+      "descriptionPlaceholder": "Ticketbeschreibung eingeben",
+      "priority": "Priorität",
+      "priorityPlaceholder": "Priorität auswählen",
+      "customerCompany": "Kundenunternehmen",
+      "customerCompanyPlaceholder": "Kundenunternehmen eingeben",
+      "customerName": "Kundenname",
+      "customerNamePlaceholder": "Kundennamen eingeben",
+      "customerPhone": "Telefonnummer",
+      "customerPhonePlaceholder": "10-stellige Telefonnummer eingeben",
+      "customerEmail": "E-Mail",
+      "customerEmailPlaceholder": "Kunden-E-Mail eingeben (.com, .in, oder .io)",
+      "category": "Kategorie",
+      "categoryPlaceholder": "Kategorie auswählen",
+      "department": "Abteilung",
+      "departmentPlaceholder": "Abteilung auswählen",
+      "relatedTickets": "Verwandte Tickets",
+      "relatedTicketsPlaceholder": "Verwandte Tickets auswählen",
+      "internalNotes": "Interne Notizen",
+      "internalNotesPlaceholder": "Interne Notizen eingeben",
+      "attachments": "Anhänge",
+      "chooseFiles": "Dateien auswählen",
+      "noTickets": "Keine verwandten Tickets verfügbar"
+    }
+  },
+  "ticketForm": {
+    "title": "Neues Ticket erstellen",
+    "fields": {
+      "title": "Titel",
+      "description": "Beschreibung",
+      "priority": {
+        "label": "Priorität",
+        "high": "Hoch",
+        "medium": "Mittel",
+        "low": "Niedrig"
+      },
+      "category": {
+        "label": "Kategorie",
+        "technical": "Technisch",
+        "billing": "Abrechnung",
+        "support": "Support"
+      },
+      "customer": {
+        "company": "Firmenname",
+        "name": "Kontaktperson",
+        "phone": "Telefonnummer",
+        "email": "E-Mail"
+      },
+      "internalNotes": "Interne Notizen"
+    },
+    "buttons": {
+      "create": "Ticket erstellen",
+      "cancel": "Abbrechen"
+    }
+  },
+  "passwordModal": {
+    "title": "Passwort ändern",
+    "currentPassword": "Aktuelles Passwort",
+    "newPassword": "Neues Passwort",
+    "confirmPassword": "Neues Passwort bestätigen",
+    "buttons": {
+      "change": "Passwort ändern",
+      "cancel": "Abbrechen"
+    }
+  },
+  "common": {
+    "required": "Erforderlich",
+    "loading": "Laden...",
+    "noData": "Keine Daten verfügbar",
+    "success": "Erfolg",
+    "error": "Fehler"
+  },
+  "sidebar": {
+    "title": "Ticket-Management-System",
+    "admin": {
+      "dashboard": "Armaturenbrett",
+      "users": "Benutzer"
+    },
+    "ticketManager": {
+      "dashboard": "Armaturenbrett"
+    },
+    "customerManager": {
+      "dashboard": "Armaturenbrett"
+    },
+    "salesManager": {
+      "dashboard": "Armaturenbrett"
+    },
+    "user": {
+      "dashboard": "Armaturenbrett"
+    }
+  },
+  "errors": {
+    "authRequired": "Authentifizierung erforderlich",
+    "fetchTickets": "Fehler beim Abrufen der Tickets",
+    "invalidPhone": "Bitte geben Sie eine gültige 10-stellige Telefonnummer ein",
+    "invalidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+    "loadRelatedTickets": "Fehler beim Laden verwandter Tickets"
+  }
+} 

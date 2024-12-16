@@ -1,0 +1,210 @@
+{
+  "navbar": {
+    "dashboard": "Dashboard",
+    "createTicket": "Create Ticket",
+    "changePassword": "Change Password",
+    "logout": "Logout",
+    "profile": {
+      "role": "Role",
+      "email": "Email"
+    }
+  },
+  "dashboard": {
+    "adminTitle": "Admin Dashboard",
+    "ticket_managerTitle": "Ticket Manager Dashboard",
+    "customer_managerTitle": "Customer Manager Dashboard",
+    "sales_managerTitle": "Sales Manager Dashboard",
+    "userTitle": "User Dashboard",
+    "title": "Dashboard",
+    "loading": "Loading ticket details...",
+    "stats": {
+      "totalTickets": "Total Tickets",
+      "newTickets": "New Tickets",
+      "inProgress": "In Progress",
+      "completed": "Completed"
+    },
+    "tickets": {
+      "search": "Search tickets...",
+      "filters": {
+        "status": "Status",
+        "priority": "Priority",
+        "category": "Category",
+        "department": "Department"
+      },
+      "status": {
+        "new": "New",
+        "in_progress": "In Progress",
+        "waiting_customer": "Waiting on Customer",
+        "completed": "Completed",
+        "on_hold": "On Hold",
+        "resolved": "Resolved",
+        "rejected": "Rejected",
+        "reopened": "Reopened",
+        "escalated": "Escalated"
+      },
+      "priority": {
+        "high": "High",
+        "medium": "Medium",
+        "low": "Low"
+      },
+      "department": {
+        "sales": "Sales",
+        "sales_ue": "Sales UE",
+        "sales_sth": "Sales STH",
+        "service": "Service"
+      },
+      "category": {
+        "technical": "Technical",
+        "billing": "Billing",
+        "feature_request": "Feature Request",
+        "bug_report": "Bug Report",
+        "support": "Support"
+      },
+      "table": {
+        "id": "ID",
+        "title": "Title",
+        "status": "Status",
+        "priority": "Priority",
+        "department": "Department",
+        "created": "Created",
+        "actions": "Actions"
+      },
+      "activityLog": {
+        "title": "Activity Log",
+        "action": "Action",
+        "updatedValue": "Updated Value",
+        "previousValue": "Previous Value",
+        "noActivity": "No activity recorded"
+      },
+      "attachments": {
+        "title": "Attachments",
+        "size": "KB",
+        "noAttachments": "No attachments found"
+      }
+    },
+    "buttons": {
+      "create": "Create Ticket",
+      "createManager": "Create Manager",
+      "createUser": "Create User",
+      "view": "View",
+      "edit": "Edit",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "save": "Save Changes",
+      "download": "Download"
+    },
+    "modal": {
+      "createTicket": "Create New Ticket",
+      "editTicket": "Edit Ticket",
+      "viewTicket": "Ticket Details",
+      "createManager": "Create New Manager",
+      "createUser": "Create New User",
+      "ticketDetails": {
+        "title": "Ticket Details",
+        "ticketId": "Ticket ID"
+      }
+    },
+    "form": {
+      "title": "Title",
+      "titlePlaceholder": "Enter ticket title",
+      "description": "Description",
+      "descriptionPlaceholder": "Enter ticket description",
+      "priority": "Priority",
+      "priorityPlaceholder": "Select Priority",
+      "customerCompany": "Customer Company",
+      "customerCompanyPlaceholder": "Enter customer company",
+      "customerName": "Customer Name",
+      "customerNamePlaceholder": "Enter customer name",
+      "customerPhone": "Customer Phone",
+      "customerPhonePlaceholder": "Enter 10-digit phone number",
+      "customerEmail": "Customer Email",
+      "customerEmailPlaceholder": "Enter customer email (.com, .in, or .io)",
+      "category": "Category",
+      "categoryPlaceholder": "Select Category",
+      "department": "Department",
+      "departmentPlaceholder": "Select Department",
+      "relatedTickets": "Related Tickets",
+      "relatedTicketsPlaceholder": "Select Related Tickets",
+      "internalNotes": "Internal Notes",
+      "internalNotesPlaceholder": "Enter internal notes",
+      "attachments": "Attachments",
+      "chooseFiles": "Choose Files",
+      "noTickets": "No related tickets available"
+    }
+  },
+  "ticketForm": {
+    "title": "Create New Ticket",
+    "fields": {
+      "title": "Title",
+      "description": "Description",
+      "priority": {
+        "label": "Priority",
+        "high": "High",
+        "medium": "Medium",
+        "low": "Low"
+      },
+      "category": {
+        "label": "Category",
+        "technical": "Technical",
+        "billing": "Billing",
+        "feature_request": "Feature Request",
+        "bug_report": "Bug Report",
+        "support": "Support"
+      },
+      "customer": {
+        "company": "Company Name",
+        "name": "Contact Person",
+        "phone": "Phone Number",
+        "email": "Email"
+      },
+      "internalNotes": "Internal Notes"
+    },
+    "buttons": {
+      "create": "Create Ticket",
+      "cancel": "Cancel"
+    }
+  },
+  "passwordModal": {
+    "title": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "buttons": {
+      "change": "Change Password",
+      "cancel": "Cancel"
+    }
+  },
+  "common": {
+    "required": "Required",
+    "loading": "Loading...",
+    "noData": "No data available",
+    "success": "Success",
+    "error": "Error"
+  },
+  "sidebar": {
+    "title": "Ticket Management System",
+    "admin": {
+      "dashboard": "Dashboard",
+      "users": "Users"
+    },
+    "ticketManager": {
+      "dashboard": "Dashboard"
+    },
+    "customerManager": {
+      "dashboard": "Dashboard"
+    },
+    "salesManager": {
+      "dashboard": "Dashboard"
+    },
+    "user": {
+      "dashboard": "Dashboard"
+    }
+  },
+  "errors": {
+    "authRequired": "Authentication required",
+    "fetchTickets": "Failed to fetch tickets",
+    "invalidPhone": "Please enter a valid 10-digit phone number",
+    "invalidEmail": "Please enter a valid email address",
+    "loadRelatedTickets": "Failed to load related tickets"
+  }
+} 
