@@ -506,7 +506,7 @@ setCurrMonthCount(currMonthCount);
 <div className="assets-table-container">
   <table className="assets-table">
     <thead>
-      <tr>
+      <tr style={{position:"sticky", top:0}}>
         <th>Asset ID</th>
         <th>Description</th>
         <th style={{ width: "100px"}}>Status</th>
@@ -576,6 +576,7 @@ setCurrMonthCount(currMonthCount);
         <div style={{
           display: 'flex',
           width: '100%',
+          margin: '15px 0',
           justifyContent: 'space-around'
         }}>
           <button onClick={prev}>Previous</button>
