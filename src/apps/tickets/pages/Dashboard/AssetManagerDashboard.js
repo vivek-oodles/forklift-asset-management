@@ -509,7 +509,7 @@ setCurrMonthCount(currMonthCount);
       <tr>
         <th>Asset ID</th>
         <th>Description</th>
-        <th>Status</th>
+        <th style={{ width: "100px"}}>Status</th>
         <th>Brand</th>
         <th>Model</th>
         <th>Purchase Date</th>
@@ -525,7 +525,7 @@ setCurrMonthCount(currMonthCount);
           <td style={{ maxWidth: "150px", overflow: "hidden", textOverflow: "ellipsis" }}>
           {asset.description}
           </td>
-          <td>{asset.status}</td>
+          <td style={{ width: "100px"}}>
           <td>{asset.brand}</td>
           <td>{asset.model}</td>
           <td>{asset.purchase_date}</td>
