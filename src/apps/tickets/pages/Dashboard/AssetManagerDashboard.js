@@ -526,6 +526,18 @@ setCurrMonthCount(currMonthCount);
           {asset.description}
           </td>
           <td style={{ width: "100px"}}>
+            <div 
+              style={{
+                width:"max-content", 
+                padding:"2px 10px", 
+                borderRadius:"50px",
+                backgroundColor:"rgb(191 223 251)",
+                color:"#0052cc",
+              }}
+            >
+              {asset.status}
+            </div>
+          </td>
           <td>{asset.brand}</td>
           <td>{asset.model}</td>
           <td>{asset.purchase_date}</td>
