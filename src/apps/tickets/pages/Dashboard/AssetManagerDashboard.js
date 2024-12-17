@@ -191,7 +191,7 @@ const AssetManagerDashboard = () => {
 
   useEffect(() => {
     if (debouncedQuery !== undefined || debouncedQuery !== null) {
-      setCurrentPage(pre => 0)
+      setCurrentPage((pre) => 0);
       fetchAssets();
     }
   }, [debouncedQuery]);
@@ -242,13 +242,13 @@ const AssetManagerDashboard = () => {
       // Ensure the status is in the correct format
       const formattedData = {
         ...updatedData,
-        status: updatedData.status.toLowerCase(),
+        status: updatedData.status,
       };
 
-      console.log("Updating asset with data:", formattedData);
+      // console.log("Updating asset with data:", formattedData);
 
-      const response = await axios.put(
-        `http://127.0.0.1:8000/assets/${AssetId}/`,
+      const response = await axios.patch(
+        `${API_END_POINTS.assets}${AssetId}/`,
         formattedData,
         {
           headers: {
@@ -293,13 +293,8 @@ const AssetManagerDashboard = () => {
 
     const token = localStorage.getItem("access");
     try {
-      // Corrected URL string interpolation and Authorization header
-      console.log(
-        "Making DELETE request to:",
-        `http://127.0.0.1:8000/api/assets/${asset.id}/`
-      ); // Log the URL for DELETE request
 
-      await axios.delete(`http://127.0.0.1:8000/api/assets/${asset.id}/`, {
+      await axios.delete(`${API_END_POINTS.assets}${asset.id}/`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -360,7 +355,7 @@ const AssetManagerDashboard = () => {
     const token = localStorage.getItem("access");
     try {
       const response = await axios.get(
-        `https://adc2-14-102-190-50.ngrok-free.app/api/assets/${asset}/`,
+        `${API_END_POINTS.assets}${asset}/`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -512,7 +507,7 @@ const AssetManagerDashboard = () => {
                       color: "#0052cc",
                     }}
                   >
-                    {asset.status}
+                    {asset.status === "Miete"? "Short Term Hired":asset.status}
                   </div>
                 </td>
                 <td>{asset.brand}</td>
@@ -600,8 +595,10 @@ const AssetManagerDashboard = () => {
                       }));
                     }}
                   >
-                    <option value="new">New</option>
-                    <option value="active">Active</option>
+                    <option value="">Status</option>
+                    <option value="New">New</option>
+                    <option value="Used">Used</option>
+                    <option value="Miete">Short Term Hire</option>
                   </select>
                 </div>
 
