@@ -310,7 +310,7 @@ setCurrMonthCount(currMonthCount);
 
     try {
       const response = await axios.post(
-        'http://127.0.0.1:8000/api/assets/create/',
+        API_END_POINTS.createAssets,
         {
           ...newAsset,
           customer_name: managerName
