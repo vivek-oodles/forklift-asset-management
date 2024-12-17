@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaSearch, FaCubes, FaCalendarAlt , FaExclamationTriangle, FaShieldAlt , FaTimes, FaEdit, FaTrash, FaFile, FaDownload, FaPlus } from 'react-icons/fa';
+import { FaSearch, FaEye, FaCubes, FaCalendarAlt , FaExclamationTriangle, FaShieldAlt , FaTimes, FaEdit, FaTrash, FaFile, FaDownload, FaPlus } from 'react-icons/fa';
 import './AssetManagerDashboard.css';
 import { API_END_POINTS } from '../../../../network/apiEndPoint';
 import Pagination from '../../../../SharedComponent/Pagination';
@@ -274,13 +274,9 @@ setCurrMonthCount(currMonthCount);
      const matchesStatus = 
        filters.status === '' || asset.model === filters.status;
       
-     const matchesPriority = 
-       filters.priority === '' || asset.brand === filters.priority;
       
-     const matchesCategory = 
-       filters.category === '' || asset.name === filters.category;
       
-    return matchesSearch && matchesStatus && matchesPriority && matchesCategory;;
+    return matchesSearch && matchesStatus;
   });
 
   const [dashboardStats, setDashboardStats] = useState({
@@ -464,7 +460,7 @@ setCurrMonthCount(currMonthCount);
         <div className="search-box">
           <input 
             type="text" 
-            placeholder="Search by Asset ID or Title..." 
+            placeholder="Search by Asset ID or Decription..." 
             className="search-input"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -480,17 +476,6 @@ setCurrMonthCount(currMonthCount);
             <option value="">Status</option>
             <option value="new">New</option>
             <option value="active">Active</option>
-          </select>
-
-          <select 
-            className="filter-select"
-            value={filters.priority}
-            onChange={(e) => setFilters({...filters, priority: e.target.value})}
-          >
-            <option value="">Priority</option>
-            <option value="high">High</option>
-            <option value="middle">Medium</option>
-            <option value="low">Low</option>
           </select>
         </div>
 
@@ -513,8 +498,8 @@ setCurrMonthCount(currMonthCount);
         <th style={{ width: "100px"}}>Status</th>
         <th>Brand</th>
         <th>Model</th>
+        <th>Warehouse</th>
         <th>Purchase Date</th>
-        <th>Maintenance</th>
         <th>Operating Hour</th>
         <th>Actions</th>
       </tr>
@@ -541,8 +526,8 @@ setCurrMonthCount(currMonthCount);
           </td>
           <td>{asset.brand}</td>
           <td>{asset.model}</td>
+          <td style={{textAlign:"center"}}>{asset.warehouse}</td>
           <td>{asset.purchase_date}</td>
-          <td>{asset.maintenance_due_date}</td>
           <td>{asset.operating_hours}</td>
           <td>
             <div className="action-buttons">
@@ -550,7 +535,7 @@ setCurrMonthCount(currMonthCount);
                 className="btn-view" 
                 onClick={() => handleViewAsset(asset.id)}
               >
-                View
+                <FaEye/>
               </button>
               <button 
                 className="btn-edit"
@@ -617,12 +602,7 @@ setCurrMonthCount(currMonthCount);
                     }}
                   >
                     <option value="new">New</option>
-                    <option value="in_progress">In Progress</option>
-                    <option value="waiting_customer">Waiting on Customer</option>
-                    <option value="rejected">Rejected</option>
-                    <option value="resolved">Resolved</option>
-                    <option value="reopened">Reopened</option>
-                    <option value="escalated">Escalated</option>
+                    <option value="active">Active</option>
                   </select>
                 </div>
 
