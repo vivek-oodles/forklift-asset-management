@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaEnvelope, FaLock } from 'react-icons/fa';
 import { API_END_POINTS } from '../../../../network/apiEndPoint';
-import { postPublic } from '../../../../network/ApiService';
-import { setData } from '../../../../utils/localStorageHandler';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -32,26 +30,24 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await postPublic(API_END_POINTS.login,{ email, password } )
-
-      // const response = await fetch(API_END_POINTS.login, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({ email, password }),
-      // });
+      const response = await fetch(API_END_POINTS.login, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
       const data = await response.json();
       console.log("->",data)
 
       if (response.ok) {
         // Save tokens and user info to localStorage
-        setData('refresh', data.refresh);
-        setData('access', data.access);
-        setData('userRole', data.role);
-        setData('name', data.name); // Store the name from response
-        setData('userEmail', email); // Store email as well
+        localStorage.setItem('refresh', data.refresh);
+        localStorage.setItem('access', data.access);
+        localStorage.setItem('userRole', data.role);
+        localStorage.setItem('name', data.name); // Store the name from response
+        localStorage.setItem('userEmail', email); // Store email as well
         navigate('/dashboard', {state:{role:data.role}})
         // Navigate based on user role
         setLoading(false);

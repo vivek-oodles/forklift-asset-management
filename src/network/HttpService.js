@@ -32,7 +32,7 @@ http.interceptors.request.use(
 
 // Response Interceptor
 http.interceptors.response.use(
-    (response) => response,
+    (response) => (response),
     (error) => {
         return Promise.reject(error)
     }
