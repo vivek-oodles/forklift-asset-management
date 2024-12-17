@@ -273,13 +273,9 @@ setCurrMonthCount(currMonthCount);
      const matchesStatus = 
        filters.status === '' || asset.model === filters.status;
       
-     const matchesPriority = 
-       filters.priority === '' || asset.brand === filters.priority;
       
-     const matchesCategory = 
-       filters.category === '' || asset.name === filters.category;
       
-    return matchesSearch && matchesStatus && matchesPriority && matchesCategory;;
+    return matchesSearch && matchesStatus;
   });
 
   const [dashboardStats, setDashboardStats] = useState({
@@ -480,17 +476,6 @@ setCurrMonthCount(currMonthCount);
             <option value="new">New</option>
             <option value="active">Active</option>
           </select>
-
-          <select 
-            className="filter-select"
-            value={filters.priority}
-            onChange={(e) => setFilters({...filters, priority: e.target.value})}
-          >
-            <option value="">Priority</option>
-            <option value="high">High</option>
-            <option value="middle">Medium</option>
-            <option value="low">Low</option>
-          </select>
         </div>
 
         <button 
@@ -512,8 +497,8 @@ setCurrMonthCount(currMonthCount);
         <th style={{ width: "100px"}}>Status</th>
         <th>Brand</th>
         <th>Model</th>
+        <th>Warehouse</th>
         <th>Purchase Date</th>
-        <th>Maintenance</th>
         <th>Operating Hour</th>
         <th>Actions</th>
       </tr>
@@ -540,8 +525,8 @@ setCurrMonthCount(currMonthCount);
           </td>
           <td>{asset.brand}</td>
           <td>{asset.model}</td>
+          <td style={{textAlign:"center"}}>{asset.warehouse}</td>
           <td>{asset.purchase_date}</td>
-          <td>{asset.maintenance_due_date}</td>
           <td>{asset.operating_hours}</td>
           <td>
             <div className="action-buttons">
