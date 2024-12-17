@@ -99,14 +99,14 @@ const AssetManagerDashboard = () => {
   }, []);
 
   // Fetch assigned assets
-  const fetchAssets = async (query) => {
+  const fetchAssets = async () => {
     const token = localStorage.getItem("access");
     let search = "";
-    if (query !== undefined || query !== null) {
-      if (!isNaN(parseInt(query[0]))) {
-        search = `asset_id=${query}`;
-      } else {
-        search = `description="${query}`;
+    if (searchQuery !== undefined || searchQuery !== null) {
+      if (!isNaN(parseInt(searchQuery?.[0]))) {
+        search = `asset_id=${searchQuery}`;
+      } else if (searchQuery?.length > 0) {
+        search = `description=${searchQuery}`;
       }
     }
     if (!token) {
@@ -191,7 +191,8 @@ const AssetManagerDashboard = () => {
 
   useEffect(() => {
     if (debouncedQuery !== undefined || debouncedQuery !== null) {
-      fetchAssets(searchQuery);
+      setCurrentPage(pre => 0)
+      fetchAssets();
     }
   }, [debouncedQuery]);
 
