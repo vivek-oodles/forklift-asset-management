@@ -16,6 +16,7 @@ import {
 import './Navbar.css';
 import { useState } from 'react';
 import axios from 'axios';
+import { API_END_POINTS } from '../network/apiEndPoint';
 
 const Navbar = () => {
   const { i18n, t } = useTranslation();
@@ -120,7 +121,7 @@ const Navbar = () => {
         return;
       }
 
-      const response = await fetch('http://127.0.0.1:8000/api/auth/logout/', {
+      const response = await fetch(API_END_POINTS.logout, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

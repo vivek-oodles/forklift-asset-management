@@ -3,7 +3,7 @@ import axios from 'axios';
 import { FaUserCog, FaExclamationCircle, FaClock, FaCheckCircle, FaTimes, FaUserPlus, FaFile, FaDownload } from 'react-icons/fa';
 import './CustomerManagerDashboard.css';
 import { DashboardLoader } from '../../../../components/Loader';
-import { API_END_POINTS } from '../../../network/apiEndPoint';
+import { API_END_POINTS } from '../../../../network/apiEndPoint';
 
 const CustomerManagerDashboard = () => {
   const [assets, setAssets] = useState([]);

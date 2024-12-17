@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaSearch, FaCubes, FaCalendarAlt , FaExclamationTriangle, FaShieldAlt , FaTimes, FaEdit, FaTrash, FaFile, FaDownload, FaPlus } from 'react-icons/fa';
 import './AssetManagerDashboard.css';
-import { API_END_POINTS } from '../../../network/apiEndPoint';
+import { API_END_POINTS } from '../../../../network/apiEndPoint';
 
 const AssetManagerDashboard = () => {
   const [loading, setLoading] = useState(false);
