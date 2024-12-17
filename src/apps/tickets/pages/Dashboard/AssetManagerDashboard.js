@@ -5,24 +5,7 @@ import './AssetManagerDashboard.css';
 import { API_END_POINTS } from '../../../../network/apiEndPoint';
 import Pagination from '../../../../SharedComponent/Pagination';
 
-const AssetManagerDashboard = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const [assetCount ,  setAssetCount] =  useState(0);
-  const [overDueMaintenance, setOverDueMaintenance] = useState(0);
-  const [currMonthCount, setCurrMonthCount] = useState(0);
-  const [warranty ,  setWarranty] =  useState(0);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [selectedAsset, setSelectedAsset] = useState({});
-  const [showViewModal, setShowViewModal] = useState(false);
-  const [showLoader, setShowLoader] = useState(true);
-  const [isViewLoading, setIsViewLoading] = useState(false);
-  const [showCreateAssetModal, setShowCreateAssetModal] = useState(false);
-  const [assets, setAssets] = useState([]);
-  const [showCreateAssetsModal, setShowCreateAssetsModal] = useState(false);
-
-  const [newAsset, setNewAsset] = useState({
+const initialAssests = {
   "description": "",
   "brand": "",
   "model": "",
@@ -62,7 +45,28 @@ const AssetManagerDashboard = () => {
   "serial_number": "SN0002",
   "owner": 9,
   "warehouse":1
+  }
+
+  const limit = 5;
+
+const AssetManagerDashboard = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const [assetCount ,  setAssetCount] =  useState(0);
+  const [overDueMaintenance, setOverDueMaintenance] = useState(0);
+  const [currMonthCount, setCurrMonthCount] = useState(0);
+  const [warranty ,  setWarranty] =  useState(0);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedAsset, setSelectedAsset] = useState({});
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [showLoader, setShowLoader] = useState(true);
+  const [isViewLoading, setIsViewLoading] = useState(false);
+  const [showCreateAssetModal, setShowCreateAssetModal] = useState(false);
+  const [assets, setAssets] = useState([]);
+  const [showCreateAssetsModal, setShowCreateAssetsModal] = useState(false);
   });
+  const [newAsset, setNewAsset] = useState({...initialAssests});
 
   // Retrieve user role from local storage or context
   const [userRole, setUserRole] = useState('');
@@ -327,45 +331,7 @@ setCurrMonthCount(currMonthCount);
       setAssets(prevTickets => [...prevTickets, response.data]);
       setShowCreateAssetsModal(false);
       setNewAsset({
-       "description": "",
-  "brand": "",
-  "model": "",
-  "machine_category": 1,
-  "year_of_manufacture": 2020,
-  "lift_height": 5.5,
-  "capacity": 2500,
-  "mast": "Triple",
-  "closed_height": 2.2,
-  "purchase_date": "",
-  "purchase_price": 25000.00,
-  "battery": "4000 mah",
-  "battery_description": "Lithium-ion battery",
-  "battery_charge_due_date": "2023-12-01",
-  "locations": [1],
-  "status": "New",
-  "condition": "New",
-  "operating_hours": 0,
-  "maintenance_schedule": "",
-  "last_maintenance": "2023-09-01",
-  "next_maintenance": "2023-12-01",
-  "maintenance_costs": 500.00,
-  "warranty": "1 year",
-  "warranty_expiration_date": "",
-  "operational_status": "Operational",
-  "fuel_type": 2,
-  "fuel_consumption": 3.5,
-  "uvv_due_date": "2024-06-15",
-  "notes": "Requires regular check-up",
-  "depreciation_method": 1,
-  "useful_life": 10,
-  "residual_value": 5000.00,
-  "lease_company": "Leasing Co.",
-  "annual_depreciation_cost": 2000.00,
-  "total_operating_costs": 3000.00,
-  "assignment": 1,
-  "serial_number": "SN0002",
-  "owner": 9,
-  "warehouse":1
+       ...initialAssests
       });
       setShowCreateAssetModal(false);
     } catch (error) {
