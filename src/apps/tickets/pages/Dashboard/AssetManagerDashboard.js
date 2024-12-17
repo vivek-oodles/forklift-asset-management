@@ -241,8 +241,6 @@ setCurrMonthCount(currMonthCount);
 
   const [filters, setFilters] = useState({
     status: '',
-    priority: '',
-    category: ''
   });
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -272,7 +270,6 @@ setCurrMonthCount(currMonthCount);
       
      const matchesStatus = 
        filters.status === '' || asset.model === filters.status;
-      
       
       
     return matchesSearch && matchesStatus;
