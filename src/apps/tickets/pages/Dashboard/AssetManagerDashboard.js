@@ -3,6 +3,7 @@ import axios from 'axios';
 import { FaSearch, FaCubes, FaCalendarAlt , FaExclamationTriangle, FaShieldAlt , FaTimes, FaEdit, FaTrash, FaFile, FaDownload, FaPlus } from 'react-icons/fa';
 import './AssetManagerDashboard.css';
 import { API_END_POINTS } from '../../../../network/apiEndPoint';
+import Pagination from '../../../../SharedComponent/Pagination';
 
 const AssetManagerDashboard = () => {
   const [loading, setLoading] = useState(false);
@@ -579,6 +580,7 @@ setCurrMonthCount(currMonthCount);
           margin: '15px 0',
           justifyContent: 'space-around'
         }}>
+          {/* <Pagination totalItems={totalItems} setItemOffset={setCurrentPage} itemOffset={CurrentPage}  /> */}
           <button onClick={prev}>Previous</button>
           <button onClick={next}>Next</button>
         </div>
