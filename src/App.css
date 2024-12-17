@@ -372,4 +372,62 @@ h2 {
   width: 100%;
 }
 
+/* pagination */
+.pagination {
+	list-style: none;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	margin-top: 2rem;
+	margin-right: 20px;
+	font-size: 13px;
+	gap: 5px;
+}
+
+.pagination .page-num {
+	padding: 6px 10px;
+	cursor: pointer;
+	text-decoration: none;
+	font-weight: 400;
+	color: #101018;
+
+	background: #fff;
+	box-shadow: 1px 1px 2px rgb(67, 65, 65);
+
+	border-radius: 9px !important;
+}
+
+.pagination .previous .page-num {
+	background-color: #fff;
+	box-shadow: none !important;
+	color: #0671b7;
+}
+.pagination .next .page-num {
+	background-color: #fff;
+	box-shadow: none !important;
+	color: #0671b7;
+}
+.pagination .page-num {
+	background: #fff;
+}
+.pagination .page-num:hover {
+	background: radial-gradient(92.09% 85.42% at 86.3% 87.5%, rgba(0, 0, 0, 0.23) 0%, rgba(0, 0, 0, 0) 86.18%),
+		radial-gradient(65.28% 65.28% at 26.39% 20.83%, rgba(255, 255, 255, 0.413) 0%, rgba(255, 255, 255, 0) 69.79%, rgba(255, 255, 255, 0) 100%),
+		#1483dc !important;
+	color: #fff;
+}
+
+.pagination .active {
+	background: radial-gradient(92.09% 85.42% at 86.3% 87.5%, rgba(0, 0, 0, 0.23) 0%, rgba(0, 0, 0, 0) 86.18%),
+		radial-gradient(65.28% 65.28% at 26.39% 20.83%, rgba(255, 255, 255, 0.413) 0%, rgba(255, 255, 255, 0) 69.79%, rgba(255, 255, 255, 0) 100%),
+		#1483dc !important;
+	color: #fff;
+}
+
+.pagination .selected .page-num {
+	color: #fff;
+	background: radial-gradient(92.09% 85.42% at 86.3% 87.5%, rgba(0, 0, 0, 0.23) 0%, rgba(0, 0, 0, 0) 86.18%),
+		radial-gradient(65.28% 65.28% at 26.39% 20.83%, rgba(255, 255, 255, 0.413) 0%, rgba(255, 255, 255, 0) 69.79%, rgba(255, 255, 255, 0) 100%),
+		#1483dc !important;
+}
 
