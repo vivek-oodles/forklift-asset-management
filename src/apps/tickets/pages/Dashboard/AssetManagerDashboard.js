@@ -392,11 +392,15 @@ const AssetManagerDashboard = () => {
           <select 
             className="filter-select"
             value={filters.status}
-            onChange={(e) => setFilters({...filters, status: e.target.value})}
+            onChange={(e) => {
+              setCurrentPage(0)
+              setFilters({...filters, status: e.target.value})}
+            }
           >
             <option value="">Status</option>
-            <option value="new">New</option>
-            <option value="active">Active</option>
+            <option value="New">New</option>
+            <option value="Used">Used</option>
+            <option value="Miete">Short Term Hire</option>
           </select>
         </div>
 
