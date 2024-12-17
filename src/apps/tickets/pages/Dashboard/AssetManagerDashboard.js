@@ -17,6 +17,7 @@ import {
 import "./AssetManagerDashboard.css";
 import { API_END_POINTS } from "../../../../network/apiEndPoint";
 import Pagination from "../../../../SharedComponent/Pagination";
+import useDebounce from "../../../../hooks/useDebounce";
 
 const initialAssests = {
   description: "",
@@ -81,6 +82,13 @@ const AssetManagerDashboard = () => {
   });
   const [CurrentPage, setCurrentPage] = useState(1);
   const [newAsset, setNewAsset] = useState({ ...initialAssests });
+  const [searchQuery, setSearchQuery] = useState("");
+  const [dashboardData, setDashboardData] = useState({
+    total_assets: 0,
+    assets_under_maintenance: 0,
+    used_status: 0,
+    miete: 0,
+  });
 
   // Retrieve user role from local storage or context
   const [userRole, setUserRole] = useState("");
@@ -91,9 +99,16 @@ const AssetManagerDashboard = () => {
   }, []);
 
   // Fetch assigned assets
-  const fetchAssets = async () => {
+  const fetchAssets = async (query) => {
     const token = localStorage.getItem("access");
-
+    let search = "";
+    if (query !== undefined || query !== null) {
+      if (!isNaN(parseInt(query[0]))) {
+        search = `asset_id=${query}`;
+      } else {
+        search = `description="${query}`;
+      }
+    }
     if (!token) {
       console.error("No access token found");
       setError("Authentication required");
@@ -105,7 +120,7 @@ const AssetManagerDashboard = () => {
     axios
       .get(
         API_END_POINTS.assets +
-          `?page=${CurrentPage + 1}&page_size=${limit}${
+          `?${search}&page=${CurrentPage + 1}&page_size=${limit}${
             filters.status ? "&status=" + filters.status : ""
           }`,
         {
@@ -171,6 +186,53 @@ const AssetManagerDashboard = () => {
   useEffect(() => {
     fetchAssets();
   }, [CurrentPage, filters.status]);
+
+  const debouncedQuery = useDebounce(searchQuery, 500);
+
+  useEffect(() => {
+    if (debouncedQuery !== undefined || debouncedQuery !== null) {
+      fetchAssets(searchQuery);
+    }
+  }, [debouncedQuery]);
+
+  useEffect(() => {
+    getDashboard();
+  }, []);
+
+  const getDashboard = async () => {
+    const token = localStorage.getItem("access");
+
+    if (!token) {
+      setError("Authentication required");
+      setShowLoader(false);
+      return;
+    }
+
+    setShowLoader(true);
+    axios
+      .get(API_END_POINTS.dashboard, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "ngrok-skip-browser-warning": "69420",
+        },
+      })
+      .then((response) => {
+        const data = response.data;
+        if (data) {
+          setDashboardData({
+            total_assets: data?.total_assets,
+            assets_under_maintenance: data?.assets_under_maintenance,
+            used_status:
+              data?.assets_by_status?.find((item) => item?.status === "Used")
+                ?.count || 0,
+            miete:
+              data?.assets_by_status?.find((item) => item?.status === "Miete")
+                ?.count || 0,
+          });
+        }
+        setShowLoader(false);
+      });
+  };
 
   // Handle asset update
   const handleUpdateAsset = async (AssetId, updatedData) => {
@@ -248,67 +310,27 @@ const AssetManagerDashboard = () => {
     }
   };
 
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const query = searchQuery.toLowerCase();
-  assets?.filter((asset) => {
-    const matchesSearch =
-      asset.id.toString().toLowerCase().includes(query) ||
-      asset.title.toLowerCase().includes(query);
-
-    const matchesStatus =
-      filters.status === "" || asset.model === filters.status;
-
-    return matchesSearch && matchesStatus;
-  });
-
-  const [dashboardStats, setDashboardStats] = useState({
-    total: 0,
-    new: 0,
-    inProgress: 0,
-    completed: 0,
-  });
-
-  // useEffect(() => {
-  // const response = await axios.get('/dashboard/kpi',{})
-  // const assets = response.data
-  //   const newStats = {
-  //     total: assets.total,
-  //     new: assets.new,
-  //     inProgress: assets.filter(t => t.status.toLowerCase() === 'in_progress').length,
-  //     completed: assets.filter(t => t.status.toLowerCase() === 'completed').length
-  //   };
-  //   setDashboardStats(newStats);
-  // }, [assets]);
-
-  // Add create asset handler
-  // Function to handle asset creation
-
   const handleCreateAsset = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("access");
     const managerName = localStorage.getItem("userName"); // Get manager's name from localStorage
 
     try {
-      const payload  = {
+      const payload = {
         ...newAsset,
         customer_name: managerName,
       };
 
-      const formData=new FormData();
-      Object.entries(payload).map(([key,value])=>{
-        formData.append(key,value)
-      })
-      const response = await axios.post(
-        API_END_POINTS.createAssets,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            // "Content-Type": "application/json",
-          },
-        }
-      );
+      const formData = new FormData();
+      Object.entries(payload).map(([key, value]) => {
+        formData.append(key, value);
+      });
+      const response = await axios.post(API_END_POINTS.createAssets, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          // "Content-Type": "application/json",
+        },
+      });
 
       // Add new ticket to the list
       setAssets((prevTickets) => [...prevTickets, response.data]);
@@ -373,7 +395,7 @@ const AssetManagerDashboard = () => {
             <FaCubes />
           </div>
           <div className="stat-details">
-            <span className="stat-value">{assetCount}</span>
+            <span className="stat-value">{dashboardData.total_assets}</span>
             <span className="stat-label">Total Asset</span>
           </div>
         </div>
@@ -382,8 +404,12 @@ const AssetManagerDashboard = () => {
             <FaCalendarAlt />
           </div>
           <div className="stat-details">
-            <span className="stat-value">{currMonthCount}</span>
-            <span className="stat-label">Maintenance Deadlines</span>
+            <span className="stat-value">
+              {dashboardData.assets_under_maintenance}
+            </span>
+            <span className="stat-label" title="Under Maintenance">
+              Under Maintenance
+            </span>
           </div>
         </div>
         <div className="stat-card">
@@ -391,8 +417,10 @@ const AssetManagerDashboard = () => {
             <FaExclamationTriangle />
           </div>
           <div className="stat-details">
-            <span className="stat-value">{overDueMaintenance}</span>
-            <span className="stat-label">Maintenance overdue</span>
+            <span className="stat-value">{dashboardData.used_status}</span>
+            <span className="stat-label" title="Used assets">
+              Used assets
+            </span>
           </div>
         </div>
         <div className="stat-card">
@@ -400,8 +428,10 @@ const AssetManagerDashboard = () => {
             <FaShieldAlt />
           </div>
           <div className="stat-details">
-            <span className="stat-value">{warranty}</span>
-            <span className="stat-label">Warranty</span>
+            <span className="stat-value">{dashboardData.miete}</span>
+            <span className="stat-label" title="Short Term Hired">
+              Short Term Hired
+            </span>
           </div>
         </div>
       </div>
@@ -640,7 +670,9 @@ const AssetManagerDashboard = () => {
                         <strong>Description:</strong>{" "}
                         {selectedAsset.description}
                       </p>
-                      <p><strong>Warehouse:</strong> {selectedAsset.warehouse}</p>
+                      <p>
+                        <strong>Warehouse:</strong> {selectedAsset.warehouse}
+                      </p>
                       <p>
                         <strong>Year of Manufacture:</strong>{" "}
                         {selectedAsset.year_of_manufacture}
@@ -826,7 +858,6 @@ const AssetManagerDashboard = () => {
                     required
                   />
                 </div>
-
 
                 {/* Year of Manufacture */}
                 <div className="form-group">
