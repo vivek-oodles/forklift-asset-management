@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaSearch, FaCubes, FaCalendarAlt , FaExclamationTriangle, FaShieldAlt , FaTimes, FaEdit, FaTrash, FaFile, FaDownload, FaPlus } from 'react-icons/fa';
+import { FaSearch, FaEye, FaCubes, FaCalendarAlt , FaExclamationTriangle, FaShieldAlt , FaTimes, FaEdit, FaTrash, FaFile, FaDownload, FaPlus } from 'react-icons/fa';
 import './AssetManagerDashboard.css';
 import { API_END_POINTS } from '../../../../network/apiEndPoint';
 
@@ -463,7 +463,7 @@ setCurrMonthCount(currMonthCount);
         <div className="search-box">
           <input 
             type="text" 
-            placeholder="Search by Asset ID or Title..." 
+            placeholder="Search by Asset ID or Decription..." 
             className="search-input"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -549,7 +549,7 @@ setCurrMonthCount(currMonthCount);
                 className="btn-view" 
                 onClick={() => handleViewAsset(asset.id)}
               >
-                View
+                <FaEye/>
               </button>
               <button 
                 className="btn-edit"
@@ -615,12 +615,7 @@ setCurrMonthCount(currMonthCount);
                     }}
                   >
                     <option value="new">New</option>
-                    <option value="in_progress">In Progress</option>
-                    <option value="waiting_customer">Waiting on Customer</option>
-                    <option value="rejected">Rejected</option>
-                    <option value="resolved">Resolved</option>
-                    <option value="reopened">Reopened</option>
-                    <option value="escalated">Escalated</option>
+                    <option value="active">Active</option>
                   </select>
                 </div>
 
