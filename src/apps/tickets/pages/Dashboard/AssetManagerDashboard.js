@@ -354,12 +354,9 @@ const AssetManagerDashboard = () => {
 
     const token = localStorage.getItem("access");
     try {
-      const response = await axios.get(
-        `${API_END_POINTS.assets}${asset}/`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await axios.get(`${API_END_POINTS.assets}${asset}/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setSelectedAsset(response.data);
       console.log("hello this is daa", response.data);
     } catch (error) {
@@ -620,8 +617,8 @@ const AssetManagerDashboard = () => {
               <div className="modal-footer">
                 <button
                   type="button"
-                  className="btn-secondary"
-                  onClick={() => setShowEditModal(false)}
+                  className="btn btn-cancel"
+                  onClick={() => setShowCreateAssetModal(false)}
                 >
                   Cancel
                 </button>
@@ -657,7 +654,6 @@ const AssetManagerDashboard = () => {
                   {/* Display asset details here */}
                   {selectedAsset && Object.values(selectedAsset)?.length > 0 ? (
                     <div>
-                      <h3>Asset Details</h3>
                       <p>
                         <strong>Brand:</strong> {selectedAsset.brand}
                       </p>
@@ -716,10 +712,10 @@ const AssetManagerDashboard = () => {
                         <strong>Maintenance Costs:</strong>{" "}
                         {selectedAsset.maintenance_costs}
                       </p>
-                      <p>
+                      {/* <p>
                         <strong>Maintenance Schedule:</strong>{" "}
                         {selectedAsset.maintenance_schedule}
-                      </p>
+                      </p> */}
                       <p>
                         <strong>Operational Status:</strong>{" "}
                         {selectedAsset.operational_status}
@@ -845,15 +841,11 @@ const AssetManagerDashboard = () => {
                 <div className="form-group">
                   <label>Warehouse</label>
                   <input
-                    type="number"
-                    value={newAsset.warehouse}
+                    type="text"
+                    value={newAsset.warehouse || ''}
                     onChange={(e) =>
-                      setNewAsset({
-                        ...newAsset,
-                        warehouse: parseInt(e.target.value),
-                      })
+                      setNewAsset({ ...newAsset, warehouse: e.target.value })
                     }
-                    required
                   />
                 </div>
 
@@ -1057,7 +1049,7 @@ const AssetManagerDashboard = () => {
                   />
                 </div>
 
-                {/* Maintenance Schedule */}
+                {/* Maintenance Schedule
                 <div className="form-group">
                   <label>Maintenance Schedule</label>
                   <input
@@ -1070,7 +1062,7 @@ const AssetManagerDashboard = () => {
                       })
                     }
                   />
-                </div>
+                </div> */}
 
                 {/* Operational Status */}
                 <div className="form-group">
@@ -1181,7 +1173,7 @@ const AssetManagerDashboard = () => {
               <div className="modal-footer">
                 <button
                   type="button"
-                  className="btn-secondary"
+                  className="btn btn-cancel"
                   onClick={() => setShowCreateAssetModal(false)}
                 >
                   Cancel
