@@ -65,7 +65,12 @@ const AssetManagerDashboard = () => {
   const [showCreateAssetModal, setShowCreateAssetModal] = useState(false);
   const [assets, setAssets] = useState([]);
   const [showCreateAssetsModal, setShowCreateAssetsModal] = useState(false);
+  const [filters, setFilters] = useState({
+    status: '',
+    priority: '',
+    category: ''
   });
+  const [CurrentPage, setCurrentPage] = useState(1);
   const [newAsset, setNewAsset] = useState({...initialAssests});
 
   // Retrieve user role from local storage or context
@@ -77,7 +82,7 @@ const AssetManagerDashboard = () => {
   }, []);
 
   // Fetch assigned assets
-  useEffect(() => {  
+  const fetchAssets = async() => {
     const token = localStorage.getItem('access');
     
     if (!token) {
@@ -86,10 +91,9 @@ const AssetManagerDashboard = () => {
       setShowLoader(false);
       return;
     }
-    setShowLoader(false);
   
     setShowLoader(true);
-    axios.get(API_END_POINTS.assets, {   
+    axios.get(API_END_POINTS.assets+`?page=${CurrentPage+1}&page_size=${limit}${filters.status ? "&status="+filters.status:""}`, {   
        headers: { Authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": "69420",}  
      })
      .then(response => { 
@@ -98,6 +102,39 @@ const AssetManagerDashboard = () => {
        setAssets(response.data.results);
        setAssetCount(response.data.count)
        setShowLoader(false);  
+
+      let overDueMaintenance = 0;
+      let currMonthCount = 0;
+
+      const today = new Date();
+      const currYear = today.getFullYear();
+      const currMonth = today.getMonth() + 1; // getMonth() is zero-based, so add 1
+      const currDate = today.getDate();
+
+      data?.forEach((ele) => {
+        const nextMaintenance = ele.maintenance_due_date; // Example: "2023-12-01"
+        if (nextMaintenance) {
+          const [year, month, day] = nextMaintenance.split('-').map(Number); // Parse into integers
+
+          if (year === currYear && month === currMonth) {
+            if (currDate > day) {
+              // Current date has passed the maintenance due date
+              overDueMaintenance += 1;
+            } else {
+              // Maintenance is due later in the same month
+              currMonthCount += 1;
+            }
+          } else if (year < currYear || (year === currYear && month < currMonth)) {
+            // Handle overdue maintenance for previous months/years
+            overDueMaintenance += 1;
+          }
+        }
+      });
+
+      console.log("Overdue Maintenance:", overDueMaintenance);
+      console.log("Maintenance Due This Month:", currMonthCount);
+      setOverDueMaintenance(overDueMaintenance);
+      setCurrMonthCount(currMonthCount);
      })
      .catch(err => { 
        console.error('Error fetching assets:', err.response ? err.response.data : err.message); 
@@ -105,69 +142,11 @@ const AssetManagerDashboard = () => {
        setShowLoader(false); 
        
      }); 
-  }, []); 
+  }
 
   useEffect(() => {  
-    const token = localStorage.getItem('access');
-    
-    if (!token) {
-      console.error('No access token found');
-      setError('Authentication required');
-      setShowLoader(false);
-      return;
-    }
-    setShowLoader(false);
-  
-    setShowLoader(true);
-    axios.get(API_END_POINTS.assets, {   
-       headers: { Authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": "69420", }  
-     })
-     .then(response => { 
-       console.log("data2=>", response.data);
-const data = response.data.results;
-
-let overDueMaintenance = 0;
-let currMonthCount = 0;
-
-const today = new Date();
-const currYear = today.getFullYear();
-const currMonth = today.getMonth() + 1; // getMonth() is zero-based, so add 1
-const currDate = today.getDate();
-
-data?.forEach((ele) => {
-  const nextMaintenance = ele.maintenance_due_date; // Example: "2023-12-01"
-  if (nextMaintenance) {
-    const [year, month, day] = nextMaintenance.split('-').map(Number); // Parse into integers
-
-    if (year === currYear && month === currMonth) {
-      if (currDate > day) {
-        // Current date has passed the maintenance due date
-        overDueMaintenance += 1;
-      } else {
-        // Maintenance is due later in the same month
-        currMonthCount += 1;
-      }
-    } else if (year < currYear || (year === currYear && month < currMonth)) {
-      // Handle overdue maintenance for previous months/years
-      overDueMaintenance += 1;
-    }
-  }
-});
-
-console.log("Overdue Maintenance:", overDueMaintenance);
-console.log("Maintenance Due This Month:", currMonthCount);
-setOverDueMaintenance(overDueMaintenance);
-setCurrMonthCount(currMonthCount);
-       
-
-     })
-     .catch(err => { 
-       console.error('Error fetching assets:', err.response ? err.response.data : err.message); 
-       setError('Failed to fetch assets'); 
-       setShowLoader(false); 
-       
-     }); 
-  }, []); 
+    fetchAssets();
+  }, [CurrentPage, filters.status]); 
 
   // Handle asset update
   const handleUpdateAsset = async (AssetId, updatedData) => {
@@ -241,32 +220,8 @@ setCurrMonthCount(currMonthCount);
       alert('Failed to delete asset. Please try again.');
     }
   };
-  
-  
-
-  const [filters, setFilters] = useState({
-    status: '',
-    priority: '',
-    category: ''
-  });
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [CurrentPage, setCurrentPage] = useState(1);
-  const perPageData = 5;
-  const total = assets?.length ? assets.length/perPageData : 0;
-
-  const next = ()=>{
-    if(CurrentPage<total){
-      setCurrentPage((prev)=>prev+1)
-    }
-  }
-  const prev = ()=>{
-    if(CurrentPage>1){
-      setCurrentPage((prev)=>prev-1)
-    }
-  }
- 
-  const filteredData = assets?.slice((CurrentPage - 1) * perPageData, CurrentPage * perPageData);
 
   const query = searchQuery.toLowerCase();
   assets?.filter(asset => {
@@ -471,7 +426,7 @@ setCurrMonthCount(currMonthCount);
       </tr>
     </thead>
     <tbody>
-      {filteredData?.map((asset) => (
+      {assets?.map((asset) => (
         <tr key={asset.id}>
           <td>{asset.id}</td>
           <td style={{ maxWidth: "150px", overflow: "hidden", textOverflow: "ellipsis" }}>
@@ -531,9 +486,14 @@ setCurrMonthCount(currMonthCount);
           margin: '15px 0',
           justifyContent: 'space-around'
         }}>
-          {/* <Pagination totalItems={totalItems} setItemOffset={setCurrentPage} itemOffset={CurrentPage}  /> */}
-          <button onClick={prev}>Previous</button>
-          <button onClick={next}>Next</button>
+          <Pagination 
+            totalItems={assetCount} 
+            setItemOffset={setCurrentPage} 
+            itemOffset={CurrentPage} 
+            limit={limit}  
+          />
+          {/* <button onClick={prev}>Previous</button>
+          <button onClick={next}>Next</button> */}
         </div>
       </div>
 
