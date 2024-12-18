@@ -411,7 +411,7 @@ const AssetManagerDashboard = () => {
             <tr style={{ position: "sticky", top: 0 }}>
               <th>Asset ID</th>
               <th>Description</th>
-              <th style={{ width: "100px" }}>Status</th>
+              <th style={{ width: "160px" }}>Status</th>
               <th>Brand</th>
               <th>Model</th>
               <th>Warehouse</th>
@@ -433,7 +433,7 @@ const AssetManagerDashboard = () => {
                 >
                   {asset.description}
                 </td>
-                <td style={{ width: "100px" }}>
+                <td style={{ width: "160px" }}>
                   <div
                     style={{
                       width: "max-content",
