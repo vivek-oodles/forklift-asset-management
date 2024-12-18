@@ -1,0 +1,65 @@
+
+/* Button group container */
+.button-group {
+  display: flex;
+  border-radius: 5px;  /* Optional: Rounded corners for the whole group */
+  overflow: hidden;    /* Ensures buttons stay within the group border */
+}
+
+/* Button styling */
+.btn {
+  padding: 5px 10px;
+  font-size: 16px;
+  border: 1px solid #007bff;  /* Primary color border */
+  border-radius: 0;           /* No rounded corners on individual buttons */
+  background-color: #007bff;  /* Primary color */
+  color: white;
+  /* cursor: pointer; */
+  /* transition: background-color 0.3s ease, border-color 0.3s ease; */
+}
+
+.single-button{
+  border-radius: 5px;
+}
+
+/* Add white line between buttons (border-right) */
+.btn:not(:last-child) {
+  border-right: 1px solid white;  /* White line between buttons */
+}
+
+/* Hover effect */
+.btn:hover {
+  background-color: #014690;  /* Darker primary color on hover */
+  border-color: #014690;      /* Darker border color on hover */
+  /* transform: scale(1.02); */
+}
+
+/* Focus effect */
+.btn:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.outline {
+  border: 1px solid #0056b3;
+  border-right: 1px solid #0056b3 !important;
+  background-color: #fff;
+  color:#0056b3
+}
+
+.outline:hover {
+  color: #fff;
+}
+
+.close {
+  border: 1px solid #fd0000;
+  border-right: 1px solid #fd0000 !important;
+  background-color: #fff;
+  color:#fd0000
+}
+
+.close:hover {
+  border: 1px solid #fd0000;
+  color: #fff;
+  background-color:#fd0000
+}
