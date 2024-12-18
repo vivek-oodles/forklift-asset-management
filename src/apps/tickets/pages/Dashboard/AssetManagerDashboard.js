@@ -22,6 +22,12 @@ import InputField from "../../../../SharedComponent/Fields/InputField";
 import TextareaField from "../../../../SharedComponent/Fields/TextareaField";
 import SelectField from "../../../../SharedComponent/Fields/SelectField";
 import Button from "../../../../SharedComponent/Button/Button";
+import {
+  getProtected,
+  patchProtected,
+} from "../../../../network/ApiService";
+import { objectToQueryParams } from "../../../../utils/commonHelper";
+import { toast } from "react-toastify";
 
 const initialAssests = {
   description: "",
@@ -109,87 +115,37 @@ const AssetManagerDashboard = () => {
 
   // Fetch assigned assets
   const fetchAssets = async () => {
-    const token = localStorage.getItem("access");
-    let search = "";
-    if (searchQuery !== undefined || searchQuery !== null) {
-      if (!isNaN(parseInt(searchQuery?.[0]))) {
-        search = `asset_id=${searchQuery}`;
-      } else if (searchQuery?.length > 0) {
-        search = `description=${searchQuery}`;
-      }
-    }
-    if (!token) {
-      console.error("No access token found");
-      setError("Authentication required");
-      setShowLoader(false);
-      return;
-    }
-
-    setShowLoader(true);
-    axios
-      .get(
-        API_END_POINTS.assets +
-          `?${search}&page=${CurrentPage + 1}&page_size=${limit}${
-            filters.status ? "&status=" + filters.status : ""
-          }`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "ngrok-skip-browser-warning": "69420",
-          },
+    try {
+      setShowLoader(true);
+      const query = {
+        page: CurrentPage + 1,
+        page_size: limit,
+      };
+      if (filters.status) query.status = filters.status;
+      if (searchQuery !== undefined || searchQuery !== null) {
+        if (!isNaN(parseInt(searchQuery?.[0]))) {
+          query.asset_id = searchQuery;
+        } else if (searchQuery?.length > 0) {
+          query.description = searchQuery;
         }
-      )
-      .then((response) => {
-        console.log("data=>", response.data);
-        const data = response.data.results;
-        setAssets(response.data.results);
-        setAssetCount(response.data.count);
+      }
+      const newQuery = objectToQueryParams(query);
+      const url = `${API_END_POINTS.assets}?${newQuery}`;
+      const response = await getProtected(url);
+      if (response) {
+        setAssets(response.results);
+        setAssetCount(response.count);
         setShowLoader(false);
-
-        let overDueMaintenance = 0;
-        let currMonthCount = 0;
-
-        const today = new Date();
-        const currYear = today.getFullYear();
-        const currMonth = today.getMonth() + 1; // getMonth() is zero-based, so add 1
-        const currDate = today.getDate();
-
-        data?.forEach((ele) => {
-          const nextMaintenance = ele.maintenance_due_date; // Example: "2023-12-01"
-          if (nextMaintenance) {
-            const [year, month, day] = nextMaintenance.split("-").map(Number); // Parse into integers
-
-            if (year === currYear && month === currMonth) {
-              if (currDate > day) {
-                // Current date has passed the maintenance due date
-                overDueMaintenance += 1;
-              } else {
-                // Maintenance is due later in the same month
-                currMonthCount += 1;
-              }
-            } else if (
-              year < currYear ||
-              (year === currYear && month < currMonth)
-            ) {
-              // Handle overdue maintenance for previous months/years
-              overDueMaintenance += 1;
-            }
-          }
-        });
-
-        console.log("Overdue Maintenance:", overDueMaintenance);
-        console.log("Maintenance Due This Month:", currMonthCount);
-        setOverDueMaintenance(overDueMaintenance);
-        setCurrMonthCount(currMonthCount);
-      })
-      .catch((err) => {
-        console.error(
-          "Error fetching assets:",
-          err.response ? err.response.data : err.message
-        );
-        setError("Failed to fetch assets");
-        setShowLoader(false);
-      });
+      }
+    } catch (e) {
+      const message = e?.response?.data?.messages;
+      if (message && message?.[0]?.message) {
+        toast.error(message[0].message);
+      }
+      setShowLoader(false);
+    } finally {
+      setShowLoader(false);
+    }
   };
 
   useEffect(() => {
@@ -210,43 +166,32 @@ const AssetManagerDashboard = () => {
   }, []);
 
   const getDashboard = async () => {
-    const token = localStorage.getItem("access");
-
-    if (!token) {
-      setError("Authentication required");
-      setShowLoader(false);
-      return;
+    try {
+      const url = API_END_POINTS.dashboard;
+      const response = await getProtected(url);
+      if (response) {
+        setDashboardData({
+          total_assets: response?.total_assets,
+          assets_under_maintenance: response?.assets_under_maintenance,
+          used_status:
+            response?.assets_by_status?.find((item) => item?.status === "Used")
+              ?.count || 0,
+          miete:
+            response?.assets_by_status?.find((item) => item?.status === "Miete")
+              ?.count || 0,
+        });
+      }
+    } catch (e) {
+      console.log(e);
+      const message = e?.response?.data?.messages;
+      if (message && message?.[0]?.message) {
+        toast.error(message[0].message);
+      }
     }
-
-    setShowLoader(true);
-    axios
-      .get(API_END_POINTS.dashboard, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "ngrok-skip-browser-warning": "69420",
-        },
-      })
-      .then((response) => {
-        const data = response.data;
-        if (data) {
-          setDashboardData({
-            total_assets: data?.total_assets,
-            assets_under_maintenance: data?.assets_under_maintenance,
-            used_status:
-              data?.assets_by_status?.find((item) => item?.status === "Used")
-                ?.count || 0,
-            miete:
-              data?.assets_by_status?.find((item) => item?.status === "Miete")
-                ?.count || 0,
-          });
-        }
-        setShowLoader(false);
-      });
   };
 
   // Handle asset update
   const handleUpdateAsset = async (AssetId, updatedData) => {
-    const token = localStorage.getItem("access");
     try {
       // Ensure the status is in the correct format
       const formattedData = {
@@ -254,41 +199,27 @@ const AssetManagerDashboard = () => {
         status: updatedData.status,
       };
 
-      // console.log("Updating asset with data:", formattedData);
-
-      const response = await axios.patch(
+      const response = await patchProtected(
         `${API_END_POINTS.assets}${AssetId}/`,
-        formattedData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
+        formattedData
       );
-
-      console.log("Server response:", response.data);
-
-      // Update the assets state with the new data
       setAssets((prevAssets) =>
         prevAssets.map((asset) =>
-          asset.Asset_id === AssetId ? { ...asset, ...response.data } : asset
+          asset.Asset_id === AssetId ? { ...asset, ...response } : asset
         )
       );
-
-      // Update selected asset if modal is open
       if (selectedAsset?.Asset_id === AssetId) {
-        setSelectedAsset(response.data);
+        setSelectedAsset(response);
       }
 
       setShowEditModal(false);
-      alert("asset updated successfully!");
+      toast.success("asset updated successfully!");
     } catch (error) {
       console.error(
         "Error updating asset:",
         error.response?.data || error.message
       );
-      alert("Failed to update asset. Please try again.");
+      toast.error("Failed to update asset. Please try again.");
     }
   };
 
