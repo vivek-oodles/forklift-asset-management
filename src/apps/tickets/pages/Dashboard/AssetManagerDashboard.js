@@ -923,11 +923,10 @@ const AssetManagerDashboard = () => {
 
               <div className="modal-footer">
                 <Button
-                  text="Cancel"
                   variant="close"
                   onClick={() => setShowCreateAssetModal(false)}
-                />
-                <Button text="Create Asset" type="submit" />
+                >Cancel</Button>
+                <Button type="submit" >Create Asset</Button>
               </div>
             </form>
           </div>

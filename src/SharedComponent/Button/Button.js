@@ -2,17 +2,17 @@ import React from "react";
 import style from "./style.module.css";
 
 const Button = (props) => {
-  const { text, menus, onClick, variant, ...prop } = props;
+  const { menus, onClick, variant, children, ...prop } = props;
 
   const handleClick = (item, i) => {
-    if (text) {
+    if (children) {
       onClick();
     } else {
       onClick(item, i);
     }
   };
 
-  if (text) {
+  if (children) {
     return (
       <button
         className={`
@@ -24,7 +24,7 @@ const Button = (props) => {
         onClick={handleClick}
         {...prop}
       >
-        {text}
+        {children}
       </button>
     );
   }
