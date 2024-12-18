@@ -20,6 +20,7 @@ import SalesManagerDashboard from './apps/tickets/pages/Dashboard/SalesManagerDa
 import { useTranslation } from 'react-i18next';
 // Layout wrapper component
 import { DashboardCommon } from './apps/tickets/pages/Dashboard/DashboardCommon';
+import "react-toastify/dist/ReactToastify.css";
 
 const Layout = ({ children }) => {
   const location = useLocation();
