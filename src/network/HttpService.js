@@ -12,7 +12,7 @@ const http = axios.create({
 
 // Optionally add token dynamically if needed
 const attachAuthToken = (config) => {
-    const token = getData('accessToken')
+    const token = getData('access')
     if (token) {
         config.headers.Authorization = `Bearer ${token}`
     }
