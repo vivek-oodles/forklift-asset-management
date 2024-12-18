@@ -18,6 +18,10 @@ import "./AssetManagerDashboard.css";
 import { API_END_POINTS } from "../../../../network/apiEndPoint";
 import Pagination from "../../../../SharedComponent/Pagination";
 import useDebounce from "../../../../hooks/useDebounce";
+import InputField from "../../../../SharedComponent/Fields/InputField";
+import TextareaField from "../../../../SharedComponent/Fields/TextareaField";
+import SelectField from "../../../../SharedComponent/Fields/SelectField";
+import Button from "../../../../SharedComponent/Button/Button";
 
 const initialAssests = {
   description: "",
@@ -80,7 +84,7 @@ const AssetManagerDashboard = () => {
     priority: "",
     category: "",
   });
-  const [CurrentPage, setCurrentPage] = useState(1);
+  const [CurrentPage, setCurrentPage] = useState(0);
   const [newAsset, setNewAsset] = useState({ ...initialAssests });
   const [searchQuery, setSearchQuery] = useState("");
   const [dashboardData, setDashboardData] = useState({
@@ -89,6 +93,11 @@ const AssetManagerDashboard = () => {
     used_status: 0,
     miete: 0,
   });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNewAsset((pre) => ({ ...pre, [name]: value }));
+  };
 
   // Retrieve user role from local storage or context
   const [userRole, setUserRole] = useState("");
@@ -293,7 +302,6 @@ const AssetManagerDashboard = () => {
 
     const token = localStorage.getItem("access");
     try {
-
       await axios.delete(`${API_END_POINTS.assets}${asset.id}/`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -504,7 +512,9 @@ const AssetManagerDashboard = () => {
                       color: "#0052cc",
                     }}
                   >
-                    {asset.status === "Miete"? "Short Term Hired":asset.status}
+                    {asset.status === "Miete"
+                      ? "Short Term Hired"
+                      : asset.status}
                   </div>
                 </td>
                 <td>{asset.brand}</td>
@@ -784,403 +794,225 @@ const AssetManagerDashboard = () => {
             </div>
             <form onSubmit={handleCreateAsset}>
               <div className="modal-body">
-                <div className="form-group">
-                  <label>Brand *</label>
-                  <input
-                    type="text"
-                    value={newAsset.brand}
-                    onChange={(e) =>
-                      setNewAsset({ ...newAsset, brand: e.target.value })
-                    }
-                    className="close-button"
-                    required
-                  />
-                </div>
-
-                {/* Model */}
-                <div className="form-group">
-                  <label>Model *</label>
-                  <input
-                    type="text"
-                    value={newAsset.model}
-                    onChange={(e) =>
-                      setNewAsset({ ...newAsset, model: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-
-                {/* Description */}
-                <div className="form-group">
-                  <label>Description *</label>
-                  <textarea
-                    value={newAsset.description}
-                    onChange={(e) =>
-                      setNewAsset({ ...newAsset, description: e.target.value })
-                    }
-                    rows="2"
-                    required
-                  />
-                </div>
-
-                {/* Purchase Date */}
-                <div className="form-group">
-                  <label>Purchase Date *</label>
-                  <input
-                    type="date"
-                    value={newAsset.purchase_date}
-                    onChange={(e) =>
-                      setNewAsset({
-                        ...newAsset,
-                        purchase_date: e.target.value,
-                      })
-                    }
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Warehouse</label>
-                  <input
-                    type="text"
-                    value={newAsset.warehouse || ''}
-                    onChange={(e) =>
-                      setNewAsset({ ...newAsset, warehouse: e.target.value })
-                    }
-                  />
-                </div>
-
-                {/* Year of Manufacture */}
-                <div className="form-group">
-                  <label>Year of Manufacture *</label>
-                  <input
-                    type="number"
-                    value={newAsset.year_of_manufacture}
-                    onChange={(e) =>
-                      setNewAsset({
-                        ...newAsset,
-                        year_of_manufacture: parseInt(e.target.value),
-                      })
-                    }
-                    required
-                  />
-                </div>
-
-                {/* Battery */}
-                <div className="form-group">
-                  <label>Battery *</label>
-                  <input
-                    type="number"
-                    value={newAsset.battery}
-                    onChange={(e) =>
-                      setNewAsset({
-                        ...newAsset,
-                        battery: parseInt(e.target.value) || 0,
-                      })
-                    }
-                    required
-                  />
-                </div>
-
-                {/* Battery Charge Due Date */}
-                <div className="form-group">
-                  <label>Battery Charge Due Date</label>
-                  <input
-                    type="date"
-                    value={newAsset.battery_charge_due_date}
-                    onChange={(e) =>
-                      setNewAsset({
-                        ...newAsset,
-                        battery_charge_due_date: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                {/* Capacity */}
-                <div className="form-group">
-                  <label>Capacity *</label>
-                  <input
-                    type="number"
-                    value={newAsset.capacity}
-                    onChange={(e) =>
-                      setNewAsset({
-                        ...newAsset,
-                        capacity: parseFloat(e.target.value),
-                      })
-                    }
-                    required
-                  />
-                </div>
-
-                {/* Operating Hours */}
-                <div className="form-group">
-                  <label>Operating Hours *</label>
-                  <input
-                    type="number"
-                    value={newAsset.operating_hours}
-                    onChange={(e) =>
-                      setNewAsset({
-                        ...newAsset,
-                        operating_hours: parseInt(e.target.value),
-                      })
-                    }
-                    required
-                  />
-                </div>
-
-                {/* Warranty Expiration */}
-                <div className="form-group">
-                  <label>Warranty Expiration Date</label>
-                  <input
-                    type="date"
-                    value={newAsset.warranty_expiration_date}
-                    onChange={(e) =>
-                      setNewAsset({
-                        ...newAsset,
-                        warranty_expiration_date: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                {/* Fuel Type */}
-                <div className="form-group">
-                  <label>Fuel Type</label>
-                  <select
-                    value={newAsset.fuel_type}
-                    onChange={(e) =>
-                      setNewAsset({
-                        ...newAsset,
-                        fuel_type: parseInt(e.target.value),
-                      })
-                    }
-                  >
-                    <option value="0">Select</option>
-                    <option value="1">Diesel</option>
-                    <option value="2">Electric</option>
-                    <option value="3">Hybrid</option>
-                  </select>
-                </div>
-
-                {/* Notes */}
-                <div className="form-group">
-                  <label>Notes</label>
-                  <textarea
-                    value={newAsset.notes}
-                    onChange={(e) =>
-                      setNewAsset({ ...newAsset, notes: e.target.value })
-                    }
-                    rows="3"
-                  />
-                </div>
-
-                {/* Battery Description */}
-                <div className="form-group">
-                  <label>Battery Description</label>
-                  <input
-                    type="text"
-                    value={newAsset.battery_description}
-                    onChange={(e) =>
-                      setNewAsset({
-                        ...newAsset,
-                        battery_description: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                {/* Fuel Consumption */}
-                <div className="form-group">
-                  <label>Fuel Consumption</label>
-                  <input
-                    type="number"
-                    value={newAsset.fuel_consumption}
-                    onChange={(e) =>
-                      setNewAsset({
-                        ...newAsset,
-                        fuel_consumption: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                {/* Lease Company */}
-                <div className="form-group">
-                  <label>Lease Company</label>
-                  <input
-                    type="text"
-                    value={newAsset.lease_company}
-                    onChange={(e) =>
-                      setNewAsset({
-                        ...newAsset,
-                        lease_company: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                {/* Machine Category */}
-                <div className="form-group">
-                  <label>Machine Category</label>
-                  <input
-                    type="number"
-                    value={newAsset.machine_category}
-                    onChange={(e) =>
-                      setNewAsset({
-                        ...newAsset,
-                        machine_category: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                {/* Maintenance Costs */}
-                <div className="form-group">
-                  <label>Maintenance Costs</label>
-                  <input
-                    type="number"
-                    value={newAsset.maintenance_costs}
-                    onChange={(e) =>
-                      setNewAsset({
-                        ...newAsset,
-                        maintenance_costs: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                {/* Maintenance Schedule
-                <div className="form-group">
-                  <label>Maintenance Schedule</label>
-                  <input
-                    type="text"
-                    value={newAsset.maintenance_schedule}
-                    onChange={(e) =>
-                      setNewAsset({
-                        ...newAsset,
-                        maintenance_schedule: e.target.value,
-                      })
-                    }
-                  />
-                </div> */}
-
-                {/* Operational Status */}
-                <div className="form-group">
-                  <label>Operational Status</label>
-                  <input
-                    type="text"
-                    value={newAsset.operational_status}
-                    onChange={(e) =>
-                      setNewAsset({
-                        ...newAsset,
-                        operational_status: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                {/* Purchase Price */}
-                <div className="form-group">
-                  <label>Purchase Price</label>
-                  <input
-                    type="number"
-                    value={newAsset.purchase_price}
-                    onChange={(e) =>
-                      setNewAsset({
-                        ...newAsset,
-                        purchase_price: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                {/* Residual Value */}
-                <div className="form-group">
-                  <label>Residual Value</label>
-                  <input
-                    type="number"
-                    value={newAsset.residual_value}
-                    onChange={(e) =>
-                      setNewAsset({
-                        ...newAsset,
-                        residual_value: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                {/* Serial Number */}
-                <div className="form-group">
-                  <label>Serial Number</label>
-                  <input
-                    type="text"
-                    value={newAsset.serial_number}
-                    onChange={(e) =>
-                      setNewAsset({
-                        ...newAsset,
-                        serial_number: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                {/* Status */}
-                <div className="form-group">
-                  <label>Status</label>
-                  <select
-                    value={newAsset.status}
-                    onChange={(e) =>
-                      setNewAsset({ ...newAsset, status: e.target.value })
-                    }
-                  >
-                    <option value="">Status</option>
-                    <option value="New">New</option>
-                    <option value="Used">Used</option>
-                    <option value="Miete">Short Term Hire</option>
-                  </select>
-                </div>
-
-                {/* Total Operating Costs */}
-                <div className="form-group">
-                  <label>Total Operating Costs</label>
-                  <input
-                    type="number"
-                    value={newAsset.total_operating_costs}
-                    onChange={(e) =>
-                      setNewAsset({
-                        ...newAsset,
-                        total_operating_costs: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label>UVV_Due_Date</label>
-                  <input
-                    type="date"
-                    value={newAsset.uvv_due_date}
-                    onChange={(e) =>
-                      setNewAsset({
-                        ...newAsset,
-                        uvv_due_date: e.target.value,
-                      })
-                    }
-                  />
-                </div>
+                <InputField
+                  name="brand"
+                  value={newAsset.brand}
+                  onChange={handleChange}
+                  required
+                  label="Brand"
+                  placeholder="Enter Brand"
+                />
+                <InputField
+                  name="model"
+                  value={newAsset.model}
+                  onChange={handleChange}
+                  required
+                  label="Model"
+                  placeholder="Enter Model"
+                />
+                <TextareaField
+                  name="description"
+                  value={newAsset.description}
+                  onChange={handleChange}
+                  required
+                  label="Description"
+                  placeholder="Enter Description"
+                />
+                <InputField
+                  type="date"
+                  name="purchase_date"
+                  value={newAsset.purchase_date}
+                  onChange={handleChange}
+                  required
+                  label="Purchase Date"
+                  placeholder="Enter Purchase Date"
+                />
+                <InputField
+                  name="warehouse"
+                  value={newAsset.warehouse}
+                  onChange={handleChange}
+                  label="Warehouse"
+                  placeholder="Enter Warehouse"
+                />
+                <InputField
+                  type="number"
+                  name="year_of_manufacture"
+                  value={newAsset.year_of_manufacture}
+                  onChange={handleChange}
+                  required
+                  label="Year of Manufacture"
+                  placeholder="Enter Year of Manufacture"
+                />
+                <InputField
+                  type="number"
+                  name="battery"
+                  value={newAsset.battery}
+                  onChange={handleChange}
+                  required
+                  label="Battery"
+                  placeholder="Enter Battery"
+                />
+                <InputField
+                  type="date"
+                  name="battery_charge_due_date"
+                  value={newAsset.battery_charge_due_date}
+                  onChange={handleChange}
+                  required
+                  label="Battery Charge Due Date"
+                  placeholder="Enter Battery Charge Due Date"
+                />
+                <InputField
+                  type="number"
+                  name="capacity"
+                  value={newAsset.capacity}
+                  onChange={handleChange}
+                  required
+                  label="Capacity"
+                  placeholder="Enter Capacity"
+                />
+                <InputField
+                  type="number"
+                  name="operating_hours"
+                  value={newAsset.operating_hours}
+                  onChange={handleChange}
+                  required
+                  label="Operating Hours"
+                  placeholder="Enter Operating Hours"
+                />
+                <InputField
+                  type="date"
+                  name="warranty_expiration_date"
+                  value={newAsset.warranty_expiration_date}
+                  onChange={handleChange}
+                  label="Warranty Expiration Date"
+                  placeholder="Enter Warranty Expiration Date"
+                />
+                <SelectField
+                  name="fuel_type"
+                  value={newAsset.fuel_type}
+                  onChange={handleChange}
+                  label="Fuel Type"
+                  placeholder="Enter Fuel Type"
+                  menus={[
+                    { value: "", option: "Select" },
+                    { value: "Diesel", option: "Diesel" },
+                    { value: "Electric", option: "Electric" },
+                    { value: "Hybrid", option: "Hybrid" },
+                  ]}
+                />
+                <TextareaField
+                  name="notes"
+                  value={newAsset.notes}
+                  onChange={handleChange}
+                  label="Notes"
+                  placeholder="Enter Notes"
+                />
+                <TextareaField
+                  name="battery_description"
+                  value={newAsset.battery_description}
+                  onChange={handleChange}
+                  label="Battery Description"
+                  placeholder="Enter Battery Description"
+                />
+                <InputField
+                  type="number"
+                  name="fuel_consumption"
+                  value={newAsset.fuel_consumption}
+                  onChange={handleChange}
+                  label="Fuel Consumption"
+                  placeholder="Enter Fuel Consumption"
+                />
+                <InputField
+                  name="lease_company"
+                  value={newAsset.lease_company}
+                  onChange={handleChange}
+                  label="Lease Company"
+                  placeholder="Enter Lease Company"
+                />
+                <InputField
+                  type="number"
+                  name="machine_category"
+                  value={newAsset.machine_category}
+                  onChange={handleChange}
+                  label="Machine Category"
+                  placeholder="Enter Machine Category"
+                />
+                <InputField
+                  type="number"
+                  name="maintenance_costs"
+                  value={newAsset.maintenance_costs}
+                  onChange={handleChange}
+                  label="Maintenance Costs"
+                  placeholder="Enter Maintenance Costs"
+                />
+                <InputField
+                  name="operational_status"
+                  value={newAsset.operational_status}
+                  onChange={handleChange}
+                  label="Operational Status"
+                  placeholder="Enter Operational Status"
+                />
+                <InputField
+                  type="number"
+                  name="purchase_price"
+                  value={newAsset.purchase_price}
+                  onChange={handleChange}
+                  label="Purchase Price"
+                  placeholder="Enter Purchase Price"
+                />
+                <InputField
+                  type="number"
+                  name="residual_value"
+                  value={newAsset.residual_value}
+                  onChange={handleChange}
+                  label="Residual Value"
+                  placeholder="Enter Residual Value"
+                />
+                <InputField
+                  name="serial_number"
+                  value={newAsset.serial_number}
+                  onChange={handleChange}
+                  label="Serial Number"
+                  placeholder="Enter Serial Number"
+                />
+                <SelectField
+                  name="status"
+                  value={newAsset.status}
+                  onChange={handleChange}
+                  label="Status"
+                  placeholder="Enter Status"
+                  menus={[
+                    { value: "", option: "Select" },
+                    { value: "New", option: "New" },
+                    { value: "Used", option: "Used" },
+                    { value: "Miete", option: "Short Term Hire" },
+                  ]}
+                />
+                <InputField
+                  type="number"
+                  name="total_operating_costs"
+                  value={newAsset.total_operating_costs}
+                  onChange={handleChange}
+                  label="Total Operating Costs"
+                  placeholder="Enter Total Operating Costs"
+                />
+                <InputField
+                  type="date"
+                  name="uvv_due_date"
+                  value={newAsset.uvv_due_date}
+                  onChange={handleChange}
+                  label="UVV_Due_Date"
+                  placeholder="Enter UVV_Due_Date"
+                />
               </div>
 
               <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-cancel"
+                <Button
+                  text="Cancel"
+                  variant="close"
                   onClick={() => setShowCreateAssetModal(false)}
-                >
-                  Cancel
-                </button>
-                <button type="submit" className="btn-primary">
-                  Create Asset
-                </button>
+                />
+                <Button text="Create Asset" type="submit" />
               </div>
             </form>
           </div>
