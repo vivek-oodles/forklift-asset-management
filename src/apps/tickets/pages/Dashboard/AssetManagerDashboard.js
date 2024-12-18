@@ -22,6 +22,7 @@ import InputField from "../../../../SharedComponent/Fields/InputField";
 import TextareaField from "../../../../SharedComponent/Fields/TextareaField";
 import SelectField from "../../../../SharedComponent/Fields/SelectField";
 import Button from "../../../../SharedComponent/Button/Button";
+import StatCard from "../../../../SharedComponent/Dashboard/StatCard";
 import {
   getProtected,
   patchProtected,
@@ -321,51 +322,34 @@ const AssetManagerDashboard = () => {
   return (
     <div className="dashboard-container" style={{ height: "autio !important" }}>
       {/* Statistics Cards */}
-      <div className="stats-grid">
-        <div className="stat-card">
-          <div className="stat-icon total">
-            <FaCubes />
-          </div>
-          <div className="stat-details">
-            <span className="stat-value">{dashboardData.total_assets}</span>
-            <span className="stat-label">Total Asset</span>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon new">
-            <FaCalendarAlt />
-          </div>
-          <div className="stat-details">
-            <span className="stat-value">
-              {dashboardData.assets_under_maintenance}
-            </span>
-            <span className="stat-label" title="Under Maintenance">
-              Under Maintenance
-            </span>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon progress">
-            <FaExclamationTriangle />
-          </div>
-          <div className="stat-details">
-            <span className="stat-value">{dashboardData.used_status}</span>
-            <span className="stat-label" title="Used assets">
-              Used assets
-            </span>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon completed">
-            <FaShieldAlt />
-          </div>
-          <div className="stat-details">
-            <span className="stat-value">{dashboardData.miete}</span>
-            <span className="stat-label" title="Short Term Hired">
-              Short Term Hired
-            </span>
-          </div>
-        </div>
+      <div className="stats-grid" style={{width:"100%"}}>
+          <StatCard
+            icon={FaCubes}
+            value={dashboardData.total_assets}
+            label="Total Asset"
+            iconClass={"total"}
+          />
+        
+          <StatCard
+            icon={FaCalendarAlt}
+            value={dashboardData.assets_under_maintenance}
+            label="Under Maintenance"
+          />
+        
+        
+          <StatCard
+            icon={FaExclamationTriangle}
+            value={dashboardData.used_status}
+            label="Used assets"
+          />
+        
+        
+          <StatCard
+            icon={FaShieldAlt}
+            value={dashboardData.miete}
+            label="Short Term Hired"
+          />
+        
       </div>
 
       {/* Filters and Search */}
