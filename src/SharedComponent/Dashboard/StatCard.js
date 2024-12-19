@@ -11,12 +11,8 @@ import { API_END_POINTS } from "../../network/apiEndPoint";
 import { getProtected } from "../../network/ApiService";
 
 const StatCard = () => {
-  const [dashboardData, setDashboardData] = useState({
-    total_assets: 0,
-    assets_under_maintenance: 0,
-    used_status: 0,
-    miete: 0,
-  });
+  const [dashboardData, setDashboardData] = useState({});
+  const role = localStorage.getItem("userRole");
 
   useEffect(() => {
     getDashboard();
@@ -27,16 +23,7 @@ const StatCard = () => {
       const url = API_END_POINTS.dashboard;
       const response = await getProtected(url);
       if (response) {
-        setDashboardData({
-          total_assets: response?.total_assets,
-          assets_under_maintenance: response?.assets_under_maintenance,
-          used_status:
-            response?.assets_by_status?.find((item) => item?.status === "Used")
-              ?.count || 0,
-          miete:
-            response?.assets_by_status?.find((item) => item?.status === "Miete")
-              ?.count || 0,
-        });
+        setDashboardData(response);
       }
     } catch (e) {
       console.log(e);
@@ -47,42 +34,54 @@ const StatCard = () => {
     }
   };
 
-  const dashboardItems = useMemo(() => {
+  const assetsItems = useMemo(() => {
+    if (role !== "asset_manager") return [];
+    if (!dashboardData) return [];
     return [
       {
         icon: FaCubes,
-        value: dashboardData.total_assets,
+        value: dashboardData.total_assets || 0,
         label: "Total Asset",
         iconClass: "total",
       },
       {
         icon: FaCalendarAlt,
-        value: dashboardData.assets_under_maintenance,
+        value: dashboardData.assets_under_maintenance || 0,
         label: "Under Maintenance",
         iconClass: "new",
       },
       {
         icon: FaExclamationTriangle,
-        value: dashboardData.used_status,
+        value:
+          dashboardData.assets_by_status?.find(
+            (item) => item?.status === "Used"
+          )?.count || 0,
         label: "Used assets",
         iconClass: "total",
       },
       {
         icon: FaShieldAlt,
-        value: dashboardData.miete,
+        value:
+          dashboardData.assets_by_status?.find(
+            (item) => item?.status === "Miete"
+          )?.count || 0,
         label: "Short Term Hired",
         iconClass: "total",
       },
     ];
-  }, [dashboardData]);
+  }, [dashboardData, role]);
 
   return (
     <div className={style["stats-grid"]}>
-      {dashboardItems?.map((item, index) => {
+      {assetsItems?.map((item, index) => {
         return (
-          <div key={index} className={style["stat-card"]} style={{width:"25%"}}>
+          <div
+            key={index}
+            className={style["stat-card"]}
+            style={{ width: "25%" }}
+          >
             <div className={`${style["stat-icon"]} ${style[item.iconClass]}`}>
-              <item.icon style={{width:"23px", height:"23px"}} />
+              <item.icon style={{ width: "23px", height: "23px" }} />
             </div>
             <div className={style["stat-details"]}>
               <span className={style["stat-value"]}>{item.value}</span>
