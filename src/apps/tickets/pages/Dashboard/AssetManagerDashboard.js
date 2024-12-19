@@ -542,115 +542,22 @@ const AssetManagerDashboard = () => {
                   </button>
                 </div>
                 <div className="modal-body">
-                  {/* Display asset details here */}
-                  {selectedAsset && Object.values(selectedAsset)?.length > 0 ? (
-                    <div>
-                      <p>
-                        <strong>Brand:</strong> {selectedAsset.brand}
-                      </p>
-                      <p>
-                        <strong>Model:</strong> {selectedAsset.model}
-                      </p>
-                      <p>
-                        <strong>Description:</strong>{" "}
-                        {selectedAsset.description}
-                      </p>
-                      <p>
-                        <strong>Warehouse:</strong> {selectedAsset.warehouse}
-                      </p>
-                      <p>
-                        <strong>Year of Manufacture:</strong>{" "}
-                        {selectedAsset.year_of_manufacture}
-                      </p>
-                      <p>
-                        <strong>Purchase Date:</strong>{" "}
-                        {selectedAsset.purchase_date}
-                      </p>
-                      <p>
-                        <strong>Battery:</strong> {selectedAsset.battery}
-                      </p>
-                      <p>
-                        <strong>Battery Charge Due Date:</strong>{" "}
-                        {selectedAsset.battery_charge_due_date}
-                      </p>
-                      <p>
-                        <strong>Capacity:</strong>{" "}
-                        {selectedAsset.capacity
-                          ? `${selectedAsset.capacity} kg`
-                          : ""}
-                      </p>
-                      <p>
-                        <strong>Operating Hours:</strong>{" "}
-                        {selectedAsset.operating_hours}
-                      </p>
-                      <p>
-                        <strong>Warranty Expiration:</strong>{" "}
-                        {selectedAsset.warranty_expiration_date}
-                      </p>
-                      <p>
-                        <strong>Fuel Consumption:</strong>{" "}
-                        {selectedAsset.fuel_consumption}
-                      </p>
-                      <p>
-                        <strong>Lease Company:</strong>{" "}
-                        {selectedAsset.lease_company}
-                      </p>
-                      <p>
-                        <strong>Machine Category:</strong>{" "}
-                        {selectedAsset.machine_category}
-                      </p>
-                      <p>
-                        <strong>Maintenance Costs:</strong>{" "}
-                        {selectedAsset.maintenance_costs}
-                      </p>
-                      {/* <p>
-                        <strong>Maintenance Schedule:</strong>{" "}
-                        {selectedAsset.maintenance_schedule}
-                      </p> */}
-                      <p>
-                        <strong>Operational Status:</strong>{" "}
-                        {selectedAsset.operational_status}
-                      </p>
-                      <p>
-                        <strong>Purchase Price:</strong>{" "}
-                        {selectedAsset.purchase_price}
-                      </p>
-                      <p>
-                        <strong>Residual Value:</strong>{" "}
-                        {selectedAsset.residual_value}
-                      </p>
-                      <p>
-                        <strong>Serial Number:</strong>{" "}
-                        {selectedAsset.serial_number}
-                      </p>
-                      <p>
-                        <strong>Status:</strong> {selectedAsset.status}
-                      </p>
-                      <p>
-                        <strong>Total Operating Costs:</strong>{" "}
-                        {selectedAsset.total_operating_costs}
-                      </p>
-                      <p>
-                        <strong>UVV Due Date:</strong>{" "}
-                        {selectedAsset.uvv_due_date}
-                      </p>
-
-                      {/* Fuel Type */}
-                      <p>
-                        <strong>Fuel Type:</strong>
-                        {selectedAsset.fuel_type === 1
-                          ? "Diesel"
-                          : selectedAsset.fuel_type === 2
-                          ? "Electric"
-                          : selectedAsset.fuel_type === 3
-                          ? "Hybrid"
-                          : ""}
-                      </p>
-
-                      <p>
-                        <strong>Notes:</strong> {selectedAsset.notes}
-                      </p>
-                    </div>
+                  {selectedAsset ? (
+                    Object.entries(selectedAsset).map(([key, value]) => {
+                      if (
+                        key === "created_at" ||
+                        key === "updated_at" ||
+                        key === "id" ||
+                        key === "attachments"
+                      ) {
+                        return null;
+                      }
+                      return (
+                        <p key={key}>
+                          <strong>{formatKey(key)}:</strong> {value}
+                        </p>
+                      );
+                    })
                   ) : (
                     <p>No details available for this asset.</p>
                   )}
@@ -908,3 +815,9 @@ const AssetManagerDashboard = () => {
 };
 
 export default AssetManagerDashboard;
+
+const formatKey = (key) => {
+  return key
+    .replace(/_/g, " ") // Replace underscores with spaces
+    .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize first letter of each word
+};
