@@ -231,18 +231,17 @@ const AssetManagerDashboard = () => {
 
   // Handle asset deletion
   const handleDeleteAsset = async (asset) => {
-
     if (!window.confirm("Are you sure you want to delete this asset?")) {
       return;
     }
     try {
-      const url = `${API_END_POINTS.assets}${asset.id}/`
+      const url = `${API_END_POINTS.assets}${asset.id}/`;
       const response = await deleteProtected(url);
-    if (response){
-      setAssets((prevAssets) => prevAssets.filter((a) => a.id !== asset.id)); // Renamed `asset` to `a`
-      alert("Asset deleted successfully!");
-    } 
-  }catch (e) {
+      if (response) {
+        setAssets((prevAssets) => prevAssets.filter((a) => a.id !== asset.id)); // Renamed `asset` to `a`
+        alert("Asset deleted successfully!");
+      }
+    } catch (e) {
       console.log(e);
       const message = e?.response?.data?.messages;
       if (message && message?.[0]?.message) {
@@ -317,10 +316,7 @@ const AssetManagerDashboard = () => {
           </select>
         </div>
 
-        <button
-          className="btn-create"
-          onClick={() => setShowModal(true)}
-        >
+        <button className="btn-create" onClick={() => setShowModal(true)}>
           <FaPlus /> Create Asset
         </button>
       </div>
