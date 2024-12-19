@@ -31,6 +31,7 @@ import {
 import { objectToQueryParams } from "../../../../utils/commonHelper";
 import { toast } from "react-toastify";
 import CreateAssetModal from "../../../../components/common/CreateAssetModal";
+import style from "./AssetManagerDashboard.module.css";
 
 const initialAssests = {
   description: "",
@@ -325,13 +326,13 @@ const AssetManagerDashboard = () => {
       </div>
 
       {/* Assets Table */}
-      <div className="assets-table-container">
-        <table className="assets-table">
+      <div className={style["assets-table-container"]}>
+        <table className={style["assets-table"]}>
           <thead>
-            <tr style={{ position: "sticky", top: 0 }}>
+            <tr>
               <th>Asset ID</th>
               <th>Description</th>
-              <th style={{ width: "160px" }}>Status</th>
+              <th>Status</th>
               <th>Brand</th>
               <th>Model</th>
               <th>Warehouse</th>
@@ -344,24 +345,25 @@ const AssetManagerDashboard = () => {
             {assets?.map((asset) => (
               <tr key={asset.id}>
                 <td>{asset.id}</td>
-                <td
-                  style={{
-                    maxWidth: "150px",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {asset.description}
-                </td>
-                <td style={{ width: "160px" }}>
+                <td>{asset.description}</td>
+                <td>
                   <div
-                    style={{
-                      width: "max-content",
-                      padding: "2px 10px",
-                      borderRadius: "50px",
-                      backgroundColor: "rgb(191 223 251)",
-                      color: "#0052cc",
-                    }}
+                    className={`${style["status-badge"]} ${
+                      style[
+                        asset.status === "Miete"
+                          ? "completed"
+                          : asset.status === "Used"
+                          ? "in_progress"
+                          : "new"
+                      ]
+                    }`}
+                    // style={{
+                    //   width: "max-content",
+                    //   padding: "2px 10px",
+                    //   borderRadius: "50px",
+                    //   backgroundColor: "rgb(191 223 251)",
+                    //   color: "#0052cc",
+                    // }}
                   >
                     {asset.status === "Miete"
                       ? "Short Term Hired"
@@ -374,15 +376,15 @@ const AssetManagerDashboard = () => {
                 <td>{asset.purchase_date}</td>
                 <td>{asset.operating_hours}</td>
                 <td>
-                  <div className="action-buttons">
+                  <div className={style["action-buttons"]}>
                     <button
-                      className="btn-view"
+                      className={style["btn-view"]}
                       onClick={() => handleViewAsset(asset.id)}
                     >
                       <FaEye />
                     </button>
                     <button
-                      className="btn-edit"
+                      className={style["btn-edit"]}
                       onClick={() => {
                         setSelectedAsset(asset);
                         setShowEditModal(true);
@@ -391,7 +393,7 @@ const AssetManagerDashboard = () => {
                       <FaEdit />
                     </button>
                     <button
-                      className="btn-delete"
+                      className={style["btn-delete"]}
                       onClick={() => handleDeleteAsset(asset)} // Pass the full asset object
                     >
                       <FaTrash />
