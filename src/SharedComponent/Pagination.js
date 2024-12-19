@@ -51,9 +51,11 @@ const Pagination = (props) => {
         nextLinkClassName="page-num"
         previousLinkClassName="page-num"
       />
-      <p style={{ marginTop: "31px", color: "#666", fontSize: "14px" }}>
-        Showing {fromItem}-{toItems} of {totalItems}
-      </p>
+      {totalItems > 0 && (
+        <p style={{ marginTop: "31px", color: "#666", fontSize: "14px" }}>
+          Showing {fromItem}-{toItems} of {totalItems}
+        </p>
+      )}
     </div>
   );
 };
