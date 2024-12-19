@@ -538,11 +538,7 @@ const AssetManagerDashboard = () => {
         </div>
       )}
       {/* Create Asset Modal */}
-        <CreateAssetModal
-          show={showModal}
-          onClose={setShowModal}
-        />
-
+      <CreateAssetModal show={showModal} onClose={setShowModal} />
     </div>
   );
 };
