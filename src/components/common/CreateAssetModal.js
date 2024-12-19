@@ -9,6 +9,7 @@ import TextareaField from "../../SharedComponent/Fields/TextareaField";
 import SelectField from "../../SharedComponent/Fields/SelectField";
 import Button from "../../SharedComponent/Button/Button";
 import { API_END_POINTS } from "../../network/apiEndPoint";
+import { postProtected } from "../../network/ApiService";
 
 const initialAssests = {
   description: "",
@@ -57,7 +58,7 @@ const CreateAssetModal = ({ show, onClose, onSubmit }) => {
   };
   const handleCreateAsset = async (e) => {
     e.preventDefault();
-    const managerName = localStorage.getItem("userName"); 
+    const managerName = localStorage.getItem("userName");
 
     try {
       const payload = {
@@ -69,16 +70,16 @@ const CreateAssetModal = ({ show, onClose, onSubmit }) => {
       Object.entries(payload).map(([key, value]) => {
         formData.append(key, value);
       });
-      const response = await axios.post(API_END_POINTS.createAssets, formData);
-
+      const url = API_END_POINTS.createAssets;
+      const response = await postProtected(url, formData, { formData: true });
       // Add new asset to the list
-    if (response) {
-      setNewAsset({
-        ...initialAssests,
-      });
-      onClose(false);
-    } 
-    }catch (e) {
+      if (response) {
+        setNewAsset({
+          ...initialAssests,
+        });
+        onClose(false);
+      }
+    } catch (e) {
       console.log(e);
       const message = e?.response?.data?.messages;
       if (message && message?.[0]?.message) {
@@ -132,12 +133,15 @@ const CreateAssetModal = ({ show, onClose, onSubmit }) => {
               label="Purchase Date"
               placeholder="Enter Purchase Date"
             />
-            <InputField
+            <SelectField
               name="warehouse"
               value={newAsset.warehouse}
               onChange={handleChange}
               label="Warehouse"
-              placeholder="Enter Warehouse"
+              menus={[
+                { value: "", option: "Select" },
+                { value: "1", option: "Warehouse 1, NY" },
+              ]}
             />
             <InputField
               type="number"
