@@ -250,7 +250,7 @@ const AssetManagerDashboard = () => {
           setAssets={setAssets}
         />
       </div>
-      <ViewData id={viewAssetId} />
+      <ViewData id={viewAssetId} setViewAssetId={setViewAssetId} />
       {/* Create Asset Modal */}
       <CreateAssetModal show={showModal} onClose={setShowModal} />
     </div>

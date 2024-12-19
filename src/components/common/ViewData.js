@@ -4,7 +4,7 @@ import { getProtected } from "../../network/ApiService";
 import { API_END_POINTS } from "../../network/apiEndPoint";
 
 const ViewData = (props) => {
-  const { id } = props;
+  const { id, setViewAssetId } = props;
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [loading, setLoading] = useState(null);
   const [showModal, setShowModal] = useState(null);
@@ -22,7 +22,7 @@ const ViewData = (props) => {
     try {
       const response = await getProtected(`${API_END_POINTS.assets}${id}/`);
       if (response) {
-        console.log("this is data",response);
+        console.log("this is data", response);
         setSelectedAsset(response);
       }
       setLoading(false);
@@ -49,7 +49,10 @@ const ViewData = (props) => {
               <h2>Asset Details</h2>
               <button
                 className="close-button"
-                onClick={() => setShowModal(false)}
+                onClick={() => {
+                  setShowModal(false);
+                  setViewAssetId(null);
+                }}
               >
                 <FaTimes />
               </button>
