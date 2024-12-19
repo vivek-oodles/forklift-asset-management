@@ -119,20 +119,21 @@ const AssetManagerDashboard = () => {
       <StatCard />
 
       {/* Filters and Search */}
-      <div className="controls-section">
-        <div className="search-box">
+      <div className={style["controls-section2"]}>
+        <div className={style["Control-2"]}>
+        <div className={style["search-box"]}>
           <input
             type="text"
             placeholder="Search by Asset ID or Decription..."
-            className="search-input"
+            className={style["search-input"]}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
 
-        <div className="filters">
+        <div className={style["filters"]}>
           <select
-            className="filter-select"
+            className={style["filter-select2"]}
             value={filters.status}
             onChange={(e) => {
               setCurrentPage(0);
@@ -145,8 +146,8 @@ const AssetManagerDashboard = () => {
             <option value="Miete">Short Term Hire</option>
           </select>
         </div>
-
-        <button className="btn-create" onClick={() => setShowModal(true)}>
+        </div>
+        <button className={style["btn-create"]} onClick={() => setShowModal(true)}>
           <FaPlus /> Create Asset
         </button>
       </div>
