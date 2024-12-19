@@ -94,7 +94,7 @@ const CreateAssetModal = ({ show, onClose, onSubmit }) => {
       <div className="modal-content">
         <div className="modal-header">
           <h2>Create New Asset</h2>
-          <button className="close-button" onClick={onClose}>
+          <button className="close-button" onClick={() => onClose(false)}>
             <FaTimes />
           </button>
         </div>
