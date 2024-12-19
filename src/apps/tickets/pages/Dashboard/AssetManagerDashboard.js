@@ -286,38 +286,7 @@ const AssetManagerDashboard = () => {
   return (
     <div className="dashboard-container" style={{ height: "autio !important" }}>
       {/* Statistics Cards */}
-      <div className="stats-grid" style={{width:"100%"}}>
-          <StatCard
-            icon={FaCubes}
-            value={dashboardData.total_assets}
-            label="Total Asset"
-            iconClass={"total"}
-          />
-        
-          <StatCard
-            icon={FaCalendarAlt}
-            value={dashboardData.assets_under_maintenance}
-            label="Under Maintenance"
-            iconClass={"new"}
-          />
-        
-        
-          <StatCard
-            icon={FaExclamationTriangle}
-            value={dashboardData.used_status}
-            label="Used assets"
-            iconClass={"progress"}
-          />
-        
-        
-          <StatCard
-            icon={FaShieldAlt}
-            value={dashboardData.miete}
-            label="Short Term Hired"
-            iconClass={"completed"}
-          />
-        
-      </div>
+      <StatCard />
 
       {/* Filters and Search */}
       <div className="controls-section">
