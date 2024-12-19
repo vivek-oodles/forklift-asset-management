@@ -30,3 +30,5 @@ export const DashboardCommon = () => {
         </div>
   );
 };
+
+export default DashboardCommon;
