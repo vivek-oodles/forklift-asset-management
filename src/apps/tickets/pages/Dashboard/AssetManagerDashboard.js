@@ -31,6 +31,8 @@ import {
 import { objectToQueryParams } from "../../../../utils/commonHelper";
 import { toast } from "react-toastify";
 import CreateAssetModal from "../../../../components/common/CreateAssetModal";
+import EditAssetModal from "../../../../components/common/AssetUpdateModal";
+import AssetUpdateModal from "../../../../components/common/AssetUpdateModal";
 
 const initialAssests = {
   description: "",
@@ -192,39 +194,6 @@ const AssetManagerDashboard = () => {
       if (message && message?.[0]?.message) {
         toast.error(message[0].message);
       }
-    }
-  };
-
-  // Handle asset update
-  const handleUpdateAsset = async (AssetId, updatedData) => {
-    try {
-      // Ensure the status is in the correct format
-      const formattedData = {
-        ...updatedData,
-        status: updatedData.status,
-      };
-
-      const response = await patchProtected(
-        `${API_END_POINTS.assets}${AssetId}/`,
-        formattedData
-      );
-      setAssets((prevAssets) =>
-        prevAssets.map((asset) =>
-          asset.Asset_id === AssetId ? { ...asset, ...response } : asset
-        )
-      );
-      if (selectedAsset?.Asset_id === AssetId) {
-        setSelectedAsset(response);
-      }
-
-      setShowEditModal(false);
-      toast.success("asset updated successfully!");
-    } catch (error) {
-      console.error(
-        "Error updating asset:",
-        error.response?.data || error.message
-      );
-      toast.error("Failed to update asset. Please try again.");
     }
   };
 
@@ -453,75 +422,19 @@ const AssetManagerDashboard = () => {
       </div>
 
       {/* Modal Components - Edit, View, Create */}
-      {/* Edit Modal */}
-      {showEditModal && selectedAsset && (
-        <div className="modal-backdrop">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h2>Edit Asset</h2>
-              <button
-                className="close-button"
-                onClick={() => setShowEditModal(false)}
-              >
-                <FaTimes />
-              </button>
-            </div>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleUpdateAsset(selectedAsset.id, selectedAsset);
-              }}
-            >
-              <div className="modal-body">
-                <div className="form-group">
-                  <label>Status</label>
-                  <select
-                    value={selectedAsset.status}
-                    onChange={(e) => {
-                      setSelectedAsset((prev) => ({
-                        ...prev,
-                        status: e.target.value,
-                      }));
-                    }}
-                  >
-                    <option value="">Status</option>
-                    <option value="New">New</option>
-                    <option value="Used">Used</option>
-                    <option value="Miete">Short Term Hire</option>
-                  </select>
-                </div>
+       <div>
+      {/* Button to open the edit modal */}
+      {/* <button onClick={() => setShowEditModal(true)}>Edit Asset</button> */}
 
-                <div className="form-group">
-                  <label>Notes</label>
-                  <textarea
-                    value={selectedAsset.internal_notes || ""}
-                    onChange={(e) =>
-                      setSelectedAsset({
-                        ...selectedAsset,
-                        internal_notes: e.target.value,
-                      })
-                    }
-                    rows="4"
-                  />
-                </div>
-              </div>
-
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-cancel"
-                  onClick={() => setShowCreateAssetModal(false)}
-                >
-                  Cancel
-                </button>
-                <button type="submit" className="btn-primary">
-                  Save Changes
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      {/* Asset Update Modal */}
+      <AssetUpdateModal
+        selectedAsset={selectedAsset}
+        setSelectedAsset={setSelectedAsset}
+        setShowEditModal={setShowEditModal}
+        showEditModal={showEditModal}
+        setAssets={setAssets}
+      />
+    </div>
 
       {showViewModal && (
         <div className="modal-backdrop">
