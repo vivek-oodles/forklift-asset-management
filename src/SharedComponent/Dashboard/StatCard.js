@@ -45,13 +45,13 @@ const StatCard = () => {
         iconClass: "total",
       },
       {
-        icon: FaCalendarAlt,
+        icon: FaExclamationTriangle,
         value: dashboardData.assets_under_maintenance || 0,
         label: "Under Maintenance",
         iconClass: "new",
       },
       {
-        icon: FaExclamationTriangle,
+        icon: FaShieldAlt,
         value:
           dashboardData.assets_by_status?.find(
             (item) => item?.status === "Used"
@@ -60,7 +60,7 @@ const StatCard = () => {
         iconClass: "total",
       },
       {
-        icon: FaShieldAlt,
+        icon: FaCalendarAlt,
         value:
           dashboardData.assets_by_status?.find(
             (item) => item?.status === "Miete"
