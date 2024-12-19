@@ -2,11 +2,13 @@ import React from "react";
 import style from "./style.module.css";
 
 const Button = (props) => {
-  const { menus, onClick, variant, children, ...prop } = props;
+  const { menus, onClick, variant, children, type, ...prop } = props;
 
   const handleClick = (item, i) => {
     if (children) {
-      onClick();
+      if(type!=="submit"){
+        onClick();
+      }
     } else {
       onClick(item, i);
     }
