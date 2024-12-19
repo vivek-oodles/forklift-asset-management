@@ -29,6 +29,7 @@ import {
 } from "../../../../network/ApiService";
 import { objectToQueryParams } from "../../../../utils/commonHelper";
 import { toast } from "react-toastify";
+import CreateAssetModal from "../../../../components/common/CreateAssetModal";
 
 const initialAssests = {
   description: "",
@@ -86,6 +87,8 @@ const AssetManagerDashboard = () => {
   const [showCreateAssetModal, setShowCreateAssetModal] = useState(false);
   const [assets, setAssets] = useState([]);
   const [showCreateAssetsModal, setShowCreateAssetsModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
   const [filters, setFilters] = useState({
     status: "",
     priority: "",
@@ -246,46 +249,6 @@ const AssetManagerDashboard = () => {
     }
   };
 
-  const handleCreateAsset = async (e) => {
-    e.preventDefault();
-    const token = localStorage.getItem("access");
-    const managerName = localStorage.getItem("userName"); // Get manager's name from localStorage
-
-    try {
-      const payload = {
-        ...newAsset,
-        customer_name: managerName,
-      };
-
-      const formData = new FormData();
-      Object.entries(payload).map(([key, value]) => {
-        formData.append(key, value);
-      });
-      const response = await axios.post(API_END_POINTS.createAssets, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          // "Content-Type": "application/json",
-        },
-      });
-
-      // Add new ticket to the list
-      setAssets((prevTickets) => [...prevTickets, response.data]);
-      setShowCreateAssetsModal(false);
-      setNewAsset({
-        ...initialAssests,
-      });
-      setShowCreateAssetModal(false);
-    } catch (error) {
-      console.error("Error creating asset:", error);
-
-      if (error.response) {
-        console.log("Backend Error Response:", error.response.data);
-      }
-
-      alert("Failed to create asset. Please try again.");
-    }
-  };
-
   //// view
 
   const handleViewAsset = async (asset) => {
@@ -334,6 +297,7 @@ const AssetManagerDashboard = () => {
             icon={FaCalendarAlt}
             value={dashboardData.assets_under_maintenance}
             label="Under Maintenance"
+            iconClass={"new"}
           />
         
         
@@ -341,6 +305,7 @@ const AssetManagerDashboard = () => {
             icon={FaExclamationTriangle}
             value={dashboardData.used_status}
             label="Used assets"
+            iconClass={"progress"}
           />
         
         
@@ -348,6 +313,7 @@ const AssetManagerDashboard = () => {
             icon={FaShieldAlt}
             value={dashboardData.miete}
             label="Short Term Hired"
+            iconClass={"completed"}
           />
         
       </div>
@@ -382,7 +348,7 @@ const AssetManagerDashboard = () => {
 
         <button
           className="btn-create"
-          onClick={() => setShowCreateAssetModal(true)}
+          onClick={() => setShowModal(true)}
         >
           <FaPlus /> Create Asset
         </button>
@@ -695,7 +661,7 @@ const AssetManagerDashboard = () => {
         </div>
       )}
       {/* Create Asset Modal */}
-      {showCreateAssetModal && (
+      {/* {showCreateAssetModal && (
         <div className="modal-backdrop">
           <div className="modal-content">
             <div className="modal-header">
@@ -931,7 +897,12 @@ const AssetManagerDashboard = () => {
             </form>
           </div>
         </div>
-      )}
+      )} */}
+        <CreateAssetModal
+          show={showModal}
+          onClose={setShowModal}
+        />
+
     </div>
   );
 };

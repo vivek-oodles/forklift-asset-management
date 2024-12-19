@@ -9,9 +9,9 @@ const StatCard = (props) => {
       <div className={`${style["stat-icon"]} ${style[iconClass]}`}>
         <Icon />
       </div>
-      <div className="stat-details">
-        <span className="stat-value">{value}</span>
-        <span className="stat-label">{label}</span>
+      <div className={style["stat-details"]}>
+        <span className={style["stat-value"]}>{value}</span>
+        <span className={style["stat-label"]}>{label}</span>
       </div>
     </div>
   );
